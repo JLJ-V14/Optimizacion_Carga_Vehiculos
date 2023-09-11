@@ -116,6 +116,9 @@ void Cargar_Fecha(const Datos_CSV* Datos_Entrada, struct tm* Fecha, const int Co
 		Fecha->tm_mday = atoi(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Dia]);
 		Fecha->tm_hour = atoi(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Hora]);
 		Fecha->tm_sec = 0;
+		//Este campo sirve para detectar si la fecha es un
+		//dia de cambio de hora.
+		Fecha->tm_isdst = -1;
 
 		if (Incluir_Minuto) {
 	    Fecha->tm_min = atoi(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Minuto]);

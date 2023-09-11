@@ -29,12 +29,15 @@
 //en un campo que no proceda
 //Defino ademas 
 #define Primera_Fila             1
-#define No_Procede               -1
+#define No_Procede              -1
 //Defino si se incluye el minuto en una fecha
 // o no
 
 #define No_Incluir_Minuto        0
 #define Si_Incluir_Minuto        1
+//Numero de segundos que hay en una hora->
+
+#define Segundos_Hora           3600
 //En esta libreria los años van a partir de 1900
 //y los meses a partir de 0. Luego hay que restar
 //esas cantidades.
