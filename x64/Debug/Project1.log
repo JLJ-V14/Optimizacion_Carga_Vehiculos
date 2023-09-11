@@ -1,9 +1,6 @@
-﻿  main.c
-F:\Optimizacion\Project1\Project1\main.c(19,13): warning C4101: 'Datos_Precio_Compra': unreferenced local variable
-F:\Optimizacion\Project1\Project1\main.c(15,13): warning C4101: 'Datos_Algoritmo': unreferenced local variable
-F:\Optimizacion\Project1\Project1\main.c(20,13): warning C4101: 'Datos_Precio_Venta': unreferenced local variable
-F:\Optimizacion\Project1\Project1\main.c(18,13): warning C4101: 'Datos_Restricciones': unreferenced local variable
-F:\Optimizacion\Project1\Project1\main.c(16,13): warning C4101: 'Datos_Vehiculos': unreferenced local variable
-F:\Optimizacion\Project1\Project1\main.c(17,13): warning C4101: 'Datos_Baterias': unreferenced local variable
-F:\Optimizacion\Project1\Project1\main.c(21,13): warning C4101: 'Datos_Terminales': unreferenced local variable
-  Project1.vcxproj -> F:\Optimizacion\Project1\x64\Debug\Project1.exe
+﻿  Verificar_Precios.c
+F:\Optimizacion\Project1\Project1\Verificar_Precios.c(91,63): warning C4090: 'function': different 'const' qualifiers
+F:\Optimizacion\Project1\Project1\Verificar_Precios.c(95,62): warning C4090: 'function': different 'const' qualifiers
+F:\Optimizacion\Project1\Project1\Verificar_Precios.c(189,15): warning C4098: 'Verificar_Precios': 'void' function returning a value
+F:\Optimizacion\Project1\Project1\Verificar_Precios.c(193,15): warning C4098: 'Verificar_Precios': 'void' function returning a value
+F:\Optimizacion\Project1\Project1\Verificar_Precios.c(196,14): warning C4098: 'Verificar_Precios': 'void' function returning a value

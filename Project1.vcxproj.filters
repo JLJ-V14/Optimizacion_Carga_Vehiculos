@@ -51,6 +51,9 @@
     <ClCompile Include="Funciones_Auxiliares.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="Inicializar_Variables.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -93,6 +96,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Funciones_Auxiliares.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Inicializar_Variables.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

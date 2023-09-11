@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Funciones_Auxiliares.c" />
+    <ClCompile Include="Inicializar_Variables.c" />
     <ClCompile Include="Leer_Entradas.c" />
     <ClCompile Include="libcsv.c" />
     <ClCompile Include="Liberar_Memoria.c" />
@@ -147,6 +148,7 @@
     <ClInclude Include="csv.h" />
     <ClInclude Include="Definiciones_Globales.h" />
     <ClInclude Include="Funciones_Auxiliares.h" />
+    <ClInclude Include="Inicializar_Variables.h" />
     <ClInclude Include="Leer_Entradas.h" />
     <ClInclude Include="Liberar_Memoria.h" />
     <ClInclude Include="main.h" />

@@ -9,7 +9,7 @@
 #include "Verificar_Entradas.h"
 
 
-int Leer_CSV(const char* Nombre_Archivo, char Delimitador, Datos_CSV* Datos_Excel) {
+static int Leer_CSV(const char* Nombre_Archivo, char Delimitador, Datos_CSV* Datos_Excel) {
     //Este subprograma se utiliza para leer los datos de un CSV.
     FILE* Archivo = fopen(Nombre_Archivo, "r");
     if (!Archivo) {
