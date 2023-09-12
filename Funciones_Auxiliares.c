@@ -44,28 +44,54 @@ bool  Es_Negativo(double Numero) {
 
 	return Numero < 0;
 }
-int  Comprobar_Dimension_CSV(const int Numero_Filas, const int Numero_Columnas,
-	                         const int Minimo_Filas, const int Numero_Exacto_Columnas,
-	                         const char *Tipo_Precio) {
+int  Comprobar_Dimensiones_CSV_Fijo(Datos_CSV *Datos_Excel, const int Numero_Filas,
+	                                const int  Numero_Columnas) {
+
+	//Este subprograma se utiliza para
+	//comprobar si las dimensiones de
+	//un CSV son correctas, se utiliza
+	//para aquellos CSVs en los que las 
+	//dimensiones son fijas, y no dependen
+	//del numero de vehiculos o baterias o 
+	//horas.
+
+	if ((Datos_Excel->Columnas != Numero_Columnas) ||
+		(Datos_Excel->Filas != Numero_Filas)) {
+		return ERROR;
+	}
+	
+		return EXITO;
+	
+}
+
+int  Comprobar_Dimension_CSV_Variable(Datos_CSV* Datos_Excel,const int Minimo_Filas, 
+	                                  const int Numero_Columnas_Exactas, const char * Tipo_CSV) {
 	//Este subprograma se utiliza para
 	//comprobar si las dimensiones de 
-	//los CSVs que se leen son los 
-	//correctos, en casi todos
+	//los CSVs de los precios
+	// que se leen son los 
+	//correctos, 
 	//el numero de columnas es fijo
 	//y el numero de filas es variables
 	//pero debe haber más de dos filas
 	//(una fila para la información) y
 	//otra fila para los datos.
 
+	int Numero_Filas    = Datos_Excel->Filas;
+	int Numero_Columnas = Datos_Excel->Columnas;
+
+	//El minimo de filas incluye la fila con los
+	//encabezados.
+
 	if (Numero_Filas < Minimo_Filas) {
-		printf("Debe haber al menos %d filas con informacion en los precios de %s\n", Minimo_Filas, Tipo_Precio);
-		printf("La fila con los titulos de la informacion, y con los datos\n");
+		printf("Debe haber al menos %d filas con informacion en el CSV  de %s\n", Minimo_Filas, Tipo_CSV);
+		printf("Actualmente tiene %d Filas \n", Numero_Filas);
 		return ERROR;
 	}
 
-	if (Numero_Columnas != Numero_Exacto_Columnas) {
-		printf("Debe haber %d columnas en el Csv de los precios de %s\n", Numero_Exacto_Columnas, Tipo_Precio);
-		printf("El año, el mes, el dia, la hora y el precio \n ");
+	if (Numero_Columnas != Numero_Columnas_Exactas) {
+		printf("Debe haber %d columnas en el Csv de  %s\n", Numero_Columnas_Exactas, Tipo_CSV);
+		printf("Actualmente tiene %d Columnas \n", Numero_Columnas);
 		return ERROR;
 	}
 

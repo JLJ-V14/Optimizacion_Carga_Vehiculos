@@ -90,6 +90,10 @@ static int Verificar_Parametros_Temporales(Datos_CSV * Datos_Algoritmo) {
 	//de los datos introducidos en el CSV que contiene
     //la informacion del algoritmo es correcta
 
+	 if (Comprobar_Dimensiones_CSV_Fijo(Datos_Algoritmo, Num_Filas_Csv_Info_Algoritmo,
+		                                Num_Columnas_Csv_Info_Algoritmo)) {
+		 return ERROR;
+	}
 	if ((Verificar_Numero_Filas_Columnas_Datos_Algoritmo(Datos_Algoritmo))==ERROR) {
 		printf("El numero de filas y columnas del algoritmo es incorrecto \n.");
 		return ERROR;

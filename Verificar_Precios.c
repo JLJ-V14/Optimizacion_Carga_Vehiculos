@@ -19,6 +19,7 @@
 #define Primera_Fila_Csv_Precio       1
 
 #define PRIMERA_COLUMNA               0
+#define Segundos_Dos_Horas            7200
 static int Comprobar_Formato_Dato_Tiempo_Precio(Datos_CSV *Datos_Precio, const int Numero_Columna) {
 	//Este subprograma se utiliza para comprobar que 
 	//los datos temporales relacionados con los
@@ -207,6 +208,19 @@ static int Comprobar_Fecha_Final_Precio(Datos_CSV* Datos_Precios, Datos_CSV* Dat
 	}
 	return EXITO;
 }
+static void Imprimir_Mensaje_Error_Precio (const struct tm Fecha_1_Temp, const struct tm Fecha_2_Temp) {
+	printf("Los precios no son consecutivos \n");
+	printf("La fecha del primer precio es Año %d Mes %d Dia %d Hora %d \n",
+		Fecha_1_Temp.tm_year + Offset_Anyo,
+		Fecha_1_Temp.tm_mon + Offset_Mes,
+		Fecha_1_Temp.tm_mday,
+		Fecha_1_Temp.tm_hour);
+	printf("La fecha del segundo precio es Año %d Mes %d Dia %d Hora %d \n",
+		Fecha_2_Temp.tm_year + Offset_Anyo,
+		Fecha_2_Temp.tm_mon + Offset_Mes,
+		Fecha_2_Temp.tm_mday,
+		Fecha_2_Temp.tm_hour);
+}
 
 static int Comprobar_Consecutividad_Horas(const struct tm Fecha_1, const struct tm Fecha_2) {
 
@@ -222,26 +236,35 @@ static int Comprobar_Consecutividad_Horas(const struct tm Fecha_1, const struct 
 
 	double Diferencia_Tiempo = difftime(Fecha_1_Normalizada, Fecha_2_Normalizada);
 
-	if (Diferencia_Tiempo != Segundos_Hora) {
-		printf("Los precios no son consecutivos \n");
-		printf("La fecha del primer precio es Año %d Mes %d Dia %d Hora %d \n",
-			Fecha_1_Temp.tm_year + Offset_Anyo,
-			Fecha_1_Temp.tm_mon + Offset_Mes,
-			Fecha_1_Temp.tm_mday,
-			Fecha_1_Temp.tm_hour);
+	//Se revisa que en la fecha
+	//que se esta comprobando 
+	//no coincida con un dia 
+	//que hay un cambio de hora->
 
-		printf("La fecha del segundo precio es Año %d Mes %d Dia %d Hora %d \n",
-			Fecha_2_Temp.tm_year + Offset_Anyo,
-			Fecha_2_Temp.tm_mon  + Offset_Mes,
-			Fecha_2_Temp.tm_mday,
-			Fecha_2_Temp.tm_hour);
+	if (Fecha_1_Temp.tm_isdst != Fecha_2_Temp.tm_isdst) {
+	//Si hay una trancision
+	//de cambio de hora
+	//puede haber un tramo horario
+	//que no exista.
 
+	if (abs(Diferencia_Tiempo) <= Segundos_Dos_Horas) {
+	return EXITO;
+	}
+	else{
+		Imprimir_Mensaje_Error_Precio(Fecha_1_Temp, Fecha_2_Temp);
+	return ERROR;
+	}
+	}
+	else if (Diferencia_Tiempo != Segundos_Dos_Horas) {
+		Imprimir_Mensaje_Error_Precio(Fecha_1_Temp, Fecha_2_Temp);
 		return ERROR;
 	}
 
 	return EXITO;
 }
-static int Comprobar_Consecutividad_Precios(Datos_CSV* Datos_Precio,const char * Tipo_Csv) {
+
+
+static int Comprobar_Consecutividad_Precios(Datos_CSV* Datos_Precio) {
 	//En este subprograma se comprueba
 	//que los datos del CSV de los precios
 	//sean en horas consecutivas->
@@ -252,21 +275,32 @@ static int Comprobar_Consecutividad_Precios(Datos_CSV* Datos_Precio,const char *
 	//Si solo se tiene una fila con datos
 	//no es necesario comprobar la consecutividad
 	//ya que solo hay una hora.
-	if (Datos_Precio->Filas == 2) {
-		return EXITO;
-	}
-	else {
+	
+	
 		struct tm Fecha_1 = { 0 };
 		struct tm Fecha_2 = { 0 };
 
 	//Se itera por todas las filas 
 	//del CSV
-		for (int Numero_Fila = 1; Numero_Fila < Numero_Filas - 1; Numero_Fila) {
+		for (int Numero_Fila = 1; Numero_Fila < Numero_Filas - 1; Numero_Fila++) {
+			Cargar_Fecha(Datos_Precio, &Fecha_1, Columna_Anyo_Precio,
+				         Columna_Mes_Precio, Columna_Dia_Precio,
+				         Columna_Hora_Precio, No_Procede, Numero_Fila,
+				         No_Incluir_Minuto);
 
+			Cargar_Fecha(Datos_Precio, &Fecha_2, Columna_Anyo_Precio,
+				         Columna_Mes_Precio, Columna_Dia_Precio,
+				         Columna_Hora_Precio, No_Procede, Numero_Fila+1,
+				         No_Incluir_Minuto);
+
+			if (Comprobar_Consecutividad_Horas(Fecha_1, Fecha_2) == ERROR) {
+				printf("Las fechas no son consecutivas \n");
+				return ERROR;
+			}
 	   }
 	}
 
-}
+
 static int Comprobar_Fecha_Precios(Datos_CSV *Datos_Precio_Compra, Datos_CSV *Datos_Precio_Venta,
 	                               Datos_CSV *Datos_Algoritmo) {
 	//En este subprograma se comprueba que
@@ -279,23 +313,37 @@ static int Comprobar_Fecha_Precios(Datos_CSV *Datos_Precio_Compra, Datos_CSV *Da
 	//2.Los precios estan en orden cronologico.
 
 	if (Comprobar_Fecha_Inicial_Precio(Datos_Precio_Compra, Datos_Algoritmo) == ERROR) {
+		printf("En el CSV de compra el algoritmo empieza antes que el primer precio \n");
 		return ERROR;
 	}
 
 	if (Comprobar_Fecha_Inicial_Precio(Datos_Precio_Venta, Datos_Algoritmo) == ERROR) {
+		printf("En el CSV de venta el algoritmo empieza antes que el primer precio \n");
 		return ERROR;
 	}
 
 	if (Comprobar_Fecha_Final_Precio(Datos_Precio_Compra, Datos_Algoritmo) == ERROR) {
+		printf("En el CSV de compra el algoritmo termina más tarde que el ultimo precio \n");
 		return ERROR;
 	}
 	if (Comprobar_Fecha_Final_Precio(Datos_Precio_Venta, Datos_Algoritmo) == ERROR) {
+		printf("En el CSV de venta el algoritmo termina más tarde que el ultimo precio \n");
 		return ERROR;
 	}
 
+	if (Comprobar_Consecutividad_Precios(Datos_Precio_Compra) == ERROR ){
+		printf("Los precios no son consecutivos en el CSV de los precios de compra \n");
+		return ERROR;
+		}
 
+	if (Comprobar_Consecutividad_Precios(Datos_Precio_Venta) == ERROR) {
+		printf("Los precios no son consecutivos en el CSV de los precios de venta \n");
+		return ERROR;
+	}
+	return EXITO;
 }
-void Verificar_Precios(Datos_CSV* Datos_Precio_Compra, Datos_CSV *Datos_Precio_Venta) {
+int Verificar_Precios(Datos_CSV* Datos_Precio_Compra, Datos_CSV *Datos_Precio_Venta,
+	                   Datos_CSV* Datos_Algoritmo) {
 	//Este subprograma se utiliza para
 	//verificar que los datos de los 
 	//precios en el csv que contiene
@@ -318,6 +366,9 @@ void Verificar_Precios(Datos_CSV* Datos_Precio_Compra, Datos_CSV *Datos_Precio_V
 		return ERROR;
 	}
 	
+	if (Comprobar_Fecha_Precios(Datos_Precio_Compra, Datos_Precio_Venta, Datos_Algoritmo) == ERROR) {
+		return ERROR;
+	}
 	return EXITO;
 
 }

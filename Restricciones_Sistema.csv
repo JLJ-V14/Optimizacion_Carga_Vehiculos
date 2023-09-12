@@ -1,13 +1,11 @@
-Maxima Potencia Red-Sistema (kWh),500
-Maxima Potencia Terminal 1  (kWh),50
-Maxima Potencia Terminal 2  (kWh),50
-Maxima Potencia Terminal 3  (kWh),50
-Maxima Potencia Terminal 4  (kWh),50
-Maxima Potencia Terminal 5   (kWh),50
-Maxima Potencia Terminal 6   (kWh),50
-Maxima Potencia Terminal 7   (kWh),50
-Maxima Potencia Terminal 8   (kWh),50
-Maxima Potencia Terminal 9   (kWh),50
-Maxima Potencia Terminal 10 (kWh),50
-Maxima Potencia Terminal 11 (kWh),50
-Maxima Potencia Terminal 12 (kWh),50
+Variable Sistema,Maxima Potencia Electrolinera -Red,Maxima Potencia Terminal 1,Maxima Potencia Terminal 2,Maxima Potencia Terminal 3,Maxima Potencia Terminal 4,Maxima Potencia Terminal 5,Maxima Potencia Terminal 6,Maxima Potencia Terminal 7,Maxima Potencia Terminal 8,Maxima Potencia Terminal 9,Maxima Potencia Terminal 10,Maxima Potencia Terminal 11,Maxima Potencia Terminal 12
+Valor,500,50,50,50,50,50,50,50,50,50,50,50,50
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
