@@ -152,6 +152,7 @@
     <ClInclude Include="Leer_Entradas.h" />
     <ClInclude Include="Liberar_Memoria.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Portabilidad.h" />
     <ClInclude Include="Tipos_Optimizacion.h" />
     <ClInclude Include="Verificar_Baterias.h.h" />
     <ClInclude Include="Verificar_Datos_Algoritmo.h" />

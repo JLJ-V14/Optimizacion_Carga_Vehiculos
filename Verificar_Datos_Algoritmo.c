@@ -19,27 +19,17 @@ static int Comprobar_Resolucion_Tiempo_Simulacion(Datos_CSV *Datos_Algoritmo) {
 		return EXITO;
 	}
 }
-static int Verificar_Numero_Filas_Columnas_Datos_Algoritmo (Datos_CSV *Datos_Algoritmo)
-//Este subprograma se utiliza para verificar que
-//el numero de filas y columnas del algoritmo
-//es correcto.
-{
-	if ((Datos_Algoritmo->Columnas != Num_Columnas_Csv_Info_Algoritmo) || 
-		(Datos_Algoritmo->Filas != Num_Filas_Csv_Info_Algoritmo)) {
-		return ERROR;
-	}
-	else {
-		return EXITO;
-	}
-}
 
+static int Verificar_Encabezados_Datos_Algoritmo(Datos_CSV* Datos_Algoritmo) {
+
+}
 static int Verificar_Tipo_Datos_Csv_Algoritmo(Datos_CSV *Datos_Algoritmo) {
 //Este subprograma se utiliza para verificar
 //que  los datos de un CSV son del tipo 
 //correcto (numerico o string)
 	for (int Columna = 0; Columna < Num_Columnas_Csv_Info_Algoritmo; Columna++) {
 
-		if (Es_Un_Numero(Datos_Algoritmo->Datos[Fila_Datos_Algoritmo][Columna],Decimal_No_Incluido) == ERROR) {
+		if (!Es_Un_Numero(Datos_Algoritmo->Datos[Fila_Datos_Algoritmo][Columna],Decimal_No_Incluido)) {
 			printf("Hay valores no numericos o decimales en la segunda fila del CSV de los datos del algoritmo \n");
 			return ERROR;
 		}
@@ -91,13 +81,12 @@ static int Verificar_Parametros_Temporales(Datos_CSV * Datos_Algoritmo) {
     //la informacion del algoritmo es correcta
 
 	 if (Comprobar_Dimensiones_CSV_Fijo(Datos_Algoritmo, Num_Filas_Csv_Info_Algoritmo,
-		                                Num_Columnas_Csv_Info_Algoritmo)) {
+		 Num_Columnas_Csv_Info_Algoritmo,"Informacion Algoritmo") == ERROR) {
+
+		 printf("Las Dimensiones del CSV de los datows del algoritmo son incorrectas\n");
 		 return ERROR;
 	}
-	if ((Verificar_Numero_Filas_Columnas_Datos_Algoritmo(Datos_Algoritmo))==ERROR) {
-		printf("El numero de filas y columnas del algoritmo es incorrecto \n.");
-		return ERROR;
-	}
+	
 	if ((Verificar_Tipo_Datos_Csv_Algoritmo(Datos_Algoritmo)) == ERROR) {
 		printf("Hay valores incorrectos en el CSV de datos del algoritmo \n");
 		return ERROR;

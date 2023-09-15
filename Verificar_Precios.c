@@ -29,7 +29,7 @@ static int Comprobar_Formato_Dato_Tiempo_Precio(Datos_CSV *Datos_Precio, const i
 
 		for (int Numero_Fila = Primera_Fila_Csv_Precio; Numero_Fila < Numero_Filas; Numero_Fila++) {
 
-			if (Es_Un_Numero(Datos_Precio->Datos[Numero_Fila][Numero_Columna], Decimal_No_Incluido) == ERROR) {
+			if (!Es_Un_Numero(Datos_Precio->Datos[Numero_Fila][Numero_Columna], Decimal_No_Incluido)) {
 				printf("Error en fila %d, columna %d: Los Datos temporales no pueden tener decimales \n", Numero_Fila + 1, Numero_Columna + 1);
 				return ERROR;
 			}
@@ -65,7 +65,7 @@ static int Comprobar_Precio(const Datos_CSV *Datos_Precio, const char *Nombre_Ar
 	for (int Numero_Fila = 1; Numero_Fila < Numero_Filas; Numero_Fila++) {
 
 		Precio_String = Datos_Precio->Datos[Numero_Fila][Columna_Precio];
-		if ((Es_Un_Numero(Precio_String, Decimal_Incluido)) == ERROR) {
+		if ((!Es_Un_Numero(Precio_String, Decimal_Incluido))) {
 			printf("En la fila %d del CSV de %s de los precios hay un precio que no es un numero",Numero_Fila,Nombre_Archivo);
 			return ERROR;
 		}
@@ -121,13 +121,13 @@ static int Comprobar_Dimensiones_Csv_Precios(Datos_CSV * Datos_Precio_Compra, Da
 	int Numero_Filas_Precio_Venta     = Datos_Precio_Venta->Filas;
 	int Numero_Columnas_Precio_Venta  = Datos_Precio_Venta->Columnas;
 
-	if (Comprobar_Dimension_CSV(Numero_Filas_Precio_Compra, Numero_Columnas_Precio_Compra,
-		Numero_Minimo_Filas_Precio, Numero_Columnas_Precio,
+	if (Comprobar_Dimensiones_CSV_Variable(Numero_Filas_Precio_Compra, 
+		Numero_Columnas_Precio_Compra,Numero_Minimo_Filas_Precio, Numero_Columnas_Precio,
 		"Compra") == ERROR) {
 		return ERROR;
 	}
 
-	if (Comprobar_Dimension_CSV(Numero_Filas_Precio_Venta, Numero_Columnas_Precio_Venta,
+	if (Comprobar_Dimensiones_CSV_Variable(Numero_Filas_Precio_Venta, Numero_Columnas_Precio_Venta,
 		Numero_Minimo_Filas_Precio, Numero_Columnas_Precio,
 		"Venta") == ERROR) {
 		return ERROR;
@@ -358,6 +358,17 @@ int Verificar_Precios(Datos_CSV* Datos_Precio_Compra, Datos_CSV *Datos_Precio_Ve
 	//y no hay precios negativos.
 	//3.El orden cronologio de los 
 	//precios tiene sentido.
+
+	if (Comprobar_Dimensiones_CSV_Variable(Datos_Precio_Compra, Numero_Minimo_Filas_Precio, 
+		                                Numero_Columnas_Precio,"Precio Compra kWh") == ERROR) {
+		return ERROR;
+	}
+
+	if (Comprobar_Dimensiones_CSV_Variable(Datos_Precio_Venta, Numero_Minimo_Filas_Precio,
+		Numero_Columnas_Precio, "Precio Venta kWh") == ERROR) {
+		return ERROR;
+	}
+
 	if (Comprobar_Dimensiones_Csv_Precios(Datos_Precio_Compra, Datos_Precio_Venta) == ERROR) {
 		return ERROR;
 	}

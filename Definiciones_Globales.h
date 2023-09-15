@@ -82,10 +82,13 @@
 #define Columna_Hora_Precio    3
 #define Columna_Precio         4
 
-//Defino las dimensiones que ha de tener
-//el CSV de las restricciones 
+//Defino donde se encuentra la informacion en el CSV de las restricciones->
+#define Primera_Columna_Datos_Restricciones 1
+#define Fila_Informacion_Csv_Restricciones  1
 
-#define Numero_Filas_Csv_Restricciones    2
-#define Numero_Columnas_Csv_Restricciones 14
-
+//Se define informacion relacionada con los
+//terminales de la placa de redistribucion.
+#define Numero_Terminales 12
+#define  Fila_Numero_Terminal 0
+#define  Fila_Fase            1
 #endif

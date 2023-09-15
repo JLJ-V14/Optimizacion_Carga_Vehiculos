@@ -3,13 +3,22 @@
 //frecuentemente a lo largo del codigo.
 
 #include "Definiciones_Globales.h"
+#include "Portabilidad.h"
 #include "Tipos_Optimizacion.h"
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
 
+bool Strings_Iguales(const char* String_1, const char* String_2) {
+	//Este subprograma se utiliza para comprobar
+	//que dos string son iguales, si lo son
+	//se devuelve true si no se devuelve false.
+
+	return strcasecmp(String_1, String_2) == 0;
+}
 int  Convertir_A_Entero(char* Str, int *Num) {
 	//Este subprograma se utiliza
 	//para convertir un dato de 
@@ -45,7 +54,7 @@ bool  Es_Negativo(double Numero) {
 	return Numero < 0;
 }
 int  Comprobar_Dimensiones_CSV_Fijo(Datos_CSV *Datos_Excel, const int Numero_Filas,
-	                                const int  Numero_Columnas) {
+	                                const int  Numero_Columnas,const char *Tipo_Csv) {
 
 	//Este subprograma se utiliza para
 	//comprobar si las dimensiones de
@@ -57,6 +66,7 @@ int  Comprobar_Dimensiones_CSV_Fijo(Datos_CSV *Datos_Excel, const int Numero_Fil
 
 	if ((Datos_Excel->Columnas != Numero_Columnas) ||
 		(Datos_Excel->Filas != Numero_Filas)) {
+		printf("Error el Csv de %s debe tener %d filas y %d columnas", Tipo_Csv, Numero_Filas, Numero_Columnas);
 		return ERROR;
 	}
 	
@@ -64,7 +74,7 @@ int  Comprobar_Dimensiones_CSV_Fijo(Datos_CSV *Datos_Excel, const int Numero_Fil
 	
 }
 
-int  Comprobar_Dimension_CSV_Variable(Datos_CSV* Datos_Excel,const int Minimo_Filas, 
+int  Comprobar_Dimensiones_CSV_Variable(Datos_CSV* Datos_Excel,const int Minimo_Filas, 
 	                                  const int Numero_Columnas_Exactas, const char * Tipo_CSV) {
 	//Este subprograma se utiliza para
 	//comprobar si las dimensiones de 
@@ -156,7 +166,7 @@ void Cargar_Fecha(const Datos_CSV* Datos_Entrada, struct tm* Fecha, const int Co
 
 
 
-int Es_Un_Numero(const char* str, int Permitir_Decimal) {
+bool Es_Un_Numero(const char* str, int Permitir_Decimal) {
 	//Este subprograma se utiliza para 
 	//comprobar si el dato del csv leido
 	//es un numero o no. Ademas se 
@@ -170,10 +180,10 @@ int Es_Un_Numero(const char* str, int Permitir_Decimal) {
 			if (Permitir_Decimal && str[i] == '.' && Numero_Puntos++ == 0) {
 				continue;
 			}
-			return ERROR; // No es un numero
+			return false; // No es un numero
 		}
 	}
-	return EXITO;
+	return true;
 
 }
 
