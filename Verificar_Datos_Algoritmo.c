@@ -6,6 +6,8 @@
 #include <stdlib.h>
 
 
+
+
 static int Comprobar_Resolucion_Tiempo_Simulacion(Datos_CSV *Datos_Algoritmo) {
 	//Este subprograma se utiliza con el proposito de
 	//comprobar que la diferencia temporal entre los
@@ -20,13 +22,35 @@ static int Comprobar_Resolucion_Tiempo_Simulacion(Datos_CSV *Datos_Algoritmo) {
 	}
 }
 
-static int Verificar_Encabezados_Datos_Algoritmo(Datos_CSV* Datos_Algoritmo) {
+static int Verificar_Encabezados_Algoritmo(Datos_CSV* Datos_Algoritmo) {
+    //Este subprograma se utiliza
+	//para verificar que los datos
+	//del Array son correctos. Se 
+	//Define los valores que han de 
+	//tener los encabezados y se llama
+	//al subprograma que se encarga de
+	//comprobarlo.
+
+	const wchar_t* Valores_Aceptables[] = { L"Año Inicial",L"Mes Inicial",L"Hora Inicial",
+	                                        L"Minuto Inicial",L"Año Final",L"Mes Final",
+	                                        L"Dia Final",L"Minuto Final", L"Resolucion Minutos"};
+	const int Numero_Encabezados = sizeof(Valores_Aceptables) / sizeof(Valores_Aceptables[0]);
+
+
+	if (Verificar_Encabezado_CSV(Datos_Algoritmo, Valores_Aceptables,
+		Numero_Encabezados, "Datos del Algoritmo") == ERROR) {
+		printf("Los encabezados del CSV de los datos del algoritmo son incorrectos\n");
+		return ERROR;
+	}
+
+
+	return EXITO;
 
 }
 static int Verificar_Tipo_Datos_Csv_Algoritmo(Datos_CSV *Datos_Algoritmo) {
-//Este subprograma se utiliza para verificar
-//que  los datos de un CSV son del tipo 
-//correcto (numerico o string)
+     //Este subprograma se utiliza para verificar
+     //que  los datos de un CSV son del tipo 
+     //correcto (numerico o string)
 	for (int Columna = 0; Columna < Num_Columnas_Csv_Info_Algoritmo; Columna++) {
 
 		if (!Es_Un_Numero(Datos_Algoritmo->Datos[Fila_Datos_Algoritmo][Columna],Decimal_No_Incluido)) {
@@ -75,6 +99,7 @@ static int Verificar_Parametros_Temporales(Datos_CSV * Datos_Algoritmo) {
 	
 }
 
+
  int Verificar_Datos_Algoritmo(Datos_CSV * Datos_Algoritmo) {
 	//En este subprograma se verifica que el formato de 
 	//de los datos introducidos en el CSV que contiene
@@ -87,6 +112,10 @@ static int Verificar_Parametros_Temporales(Datos_CSV * Datos_Algoritmo) {
 		 return ERROR;
 	}
 	
+	 if (Verificar_Encabezados_Algoritmo(Datos_Algoritmo) == ERROR) {
+		 printf("Los encabezados del algoritmo no son correctos \n");
+		 return ERROR;
+	}
 	if ((Verificar_Tipo_Datos_Csv_Algoritmo(Datos_Algoritmo)) == ERROR) {
 		printf("Hay valores incorrectos en el CSV de datos del algoritmo \n");
 		return ERROR;

@@ -51,7 +51,7 @@
     <ClCompile Include="Funciones_Auxiliares.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Inicializar_Variables.c">
+    <ClCompile Include="Inicializar_Programa.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,7 +98,7 @@
     <ClInclude Include="Funciones_Auxiliares.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Inicializar_Variables.h">
+    <ClInclude Include="Inicializar_Programa.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Portabilidad.h">

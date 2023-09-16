@@ -5,21 +5,76 @@
 #include "Definiciones_Globales.h"
 #include "Portabilidad.h"
 #include "Tipos_Optimizacion.h"
-#include <time.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <ctype.h>
+#include "time.h"
 
+#include <ctype.h>
+#include <locale.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+//Se definen que funciones hay 
+//que utilizar en funcion del 
+//sistema operativo.
+
+#ifdef _WIN32
+#define strcasecmp _stricmp
+#define wcsdup _wcsdup
+#endif
+
+bool Strings_Iguales(const wchar_t* String_1, const wchar_t* String_2) {
+	//Este subprograma se utiliza para comprobar
+	//que dos string son iguales, si lo son
+	//se devuelve true si no se devuelve false.
+
+	//Se configura que el lenguaje utilizado
+	//es español y UTF-8 para los caracteres.
+
+	//Ademas se configura que funcione tanto en 
+	//Linux como en windows.
+ 
+
+	if (setlocale(LC_ALL, NULL) == NULL) {
+		// Handle error
+		printf("No se ha podido configurar en Español\n");
+		return false;
+	}
+
+	wchar_t* u1 = wcsdup(String_1);
+	wchar_t* u2 = wcsdup(String_2);
+
+	if (u1 == NULL || u2 == NULL) {
+		free(u1);
+		free(u2);
+		return false;
+	}
+
+	for (size_t i = 0; u1[i] != L'\0'; i++) {
+		u1[i] = towupper(u1[i]);
+	}
+
+	for (size_t i = 0; u2[i] != L'\0'; i++) {
+		u2[i] = towupper(u2[i]);
+	}
+
+	int Resultado = wcscoll(u1, u2);
+
+	free(u1);
+	free(u2);
+
+	return Resultado == 0;
+}
+
+/* De momento se queda comentada
 bool Strings_Iguales(const char* String_1, const char* String_2) {
 	//Este subprograma se utiliza para comprobar
 	//que dos string son iguales, si lo son
 	//se devuelve true si no se devuelve false.
 
-	return strcasecmp(String_1, String_2) == 0;
+	return strcasecmp (String_1, String_2) == 0;
 }
-int  Convertir_A_Entero(char* Str, int *Num) {
+*/
+int  Convertir_A_Entero(wchar_t* Str, int *Num) {
 	//Este subprograma se utiliza
 	//para convertir un dato de 
 	//tipo string a una variable de
@@ -27,13 +82,13 @@ int  Convertir_A_Entero(char* Str, int *Num) {
 
 	//Puntero_Final se utiliza para comprobar
 	//que la conversión fue exitosa.
-	char* Puntero_Final;
-	*Num = strtol(Str, &Puntero_Final, 10);
-	return *Puntero_Final == '\0' ? EXITO : ERROR;
+	wchar_t* Puntero_Final;
+	*Num = wcstol(Str, &Puntero_Final, 10);
+	return *Puntero_Final == L'\0' ? EXITO : ERROR;
 	
 }
 
-int  Convertir_A_Decimal(char* str, double *Num) {
+int  Convertir_A_Decimal(wchar_t* str, double *Num) {
 	//Este subprograma se utiliza
 	//para convertir un dato de 
 	//tipo string a unva variable 
@@ -41,9 +96,9 @@ int  Convertir_A_Decimal(char* str, double *Num) {
 
 	//Puntero Final se utiliza para comprobar
 	//que la conversion fue exitosa.
-	char* Puntero_Final;
-	*Num = strtod(str, &Puntero_Final);
-	return *Puntero_Final == '\0' ? EXITO : ERROR;
+	wchar_t* Puntero_Final;
+	*Num = wcstod(str, &Puntero_Final);
+	return *Puntero_Final == L'\0' ? EXITO : ERROR;
 }
 
 bool  Es_Negativo(double Numero) {
@@ -147,17 +202,17 @@ void Cargar_Fecha(const Datos_CSV* Datos_Entrada, struct tm* Fecha, const int Co
 	//Este subprograma se utiliza para cargar la informacion de una fecha de un CSV.
 
 	
-		Fecha->tm_year = atoi(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Anyo]) - Offset_Anyo;
-		Fecha->tm_mon = atoi(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Mes]) - Offset_Mes;
-		Fecha->tm_mday = atoi(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Dia]);
-		Fecha->tm_hour = atoi(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Hora]);
+		Fecha->tm_year = wcstol(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Anyo],NULL,10) - Offset_Anyo;
+		Fecha->tm_mon = wcstol(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Mes],  NULL,10) - Offset_Mes;
+		Fecha->tm_mday = wcstol(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Dia], NULL,10);
+		Fecha->tm_hour = wcstol(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Hora],NULL,10);
 		Fecha->tm_sec = 0;
 		//Este campo sirve para detectar si la fecha es un
 		//dia de cambio de hora.
 		Fecha->tm_isdst = -1;
 
 		if (Incluir_Minuto) {
-	    Fecha->tm_min = atoi(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Minuto]);
+	    Fecha->tm_min = wcstol(Datos_Entrada->Datos[Numero_Fila][Columna_Csv_Minuto],NULL,10);
 	    }
 		else {
 		Fecha->tm_min = 0;
@@ -166,7 +221,7 @@ void Cargar_Fecha(const Datos_CSV* Datos_Entrada, struct tm* Fecha, const int Co
 
 
 
-bool Es_Un_Numero(const char* str, int Permitir_Decimal) {
+bool Es_Un_Numero(const wchar_t* str, int Permitir_Decimal) {
 	//Este subprograma se utiliza para 
 	//comprobar si el dato del csv leido
 	//es un numero o no. Ademas se 
@@ -187,3 +242,27 @@ bool Es_Un_Numero(const char* str, int Permitir_Decimal) {
 
 }
 
+int Verificar_Encabezado_CSV(Datos_CSV* Datos_Excel, const wchar_t* Valores_Encabezado[],
+	const int Numero_Encabezados, const char *Nombre_CSV) {
+	// Este subprograma se utiliza para comprobar
+	// que los encabezados de un archivo CSV sean
+	// correctos.
+
+	if (Datos_Excel == NULL || Valores_Encabezado == NULL || Numero_Encabezados <= 0||
+		Nombre_CSV  == NULL) {
+		printf("Error: Parámetros de entrada no válidos en la comprobacion de los encabezados.\n");
+		return ERROR;
+	}
+
+
+	for (int Numero_Columna = 0; Numero_Columna < Numero_Encabezados; Numero_Columna++) {
+		if (!Strings_Iguales(Datos_Excel->Datos[Fila_Encabezados][Numero_Columna],
+			Valores_Encabezado[Numero_Columna])) {
+			printf("Error en la columna %d del CSV %s el encabezado deberia ser %ls y es %ls\n",
+			Numero_Columna, Nombre_CSV, Valores_Encabezado[Numero_Columna],
+			Datos_Excel->Datos[Fila_Encabezados][Numero_Columna]);
+			return ERROR;
+		}
+	}
+	return EXITO;
+}

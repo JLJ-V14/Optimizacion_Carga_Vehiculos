@@ -3,14 +3,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
+#include <wctype.h>
 #include "Definiciones_Globales.h"
 #include "Liberar_Memoria.h"
+#include "Portabilidad.h"
 #include "Tipos_Optimizacion.h"
 #include "Verificar_Entradas.h"
 
+#ifdef _WIN32
+#define strcasecmp _stricmp
+#define wcsdup _wcsdup
+#endif
 
-static int Leer_CSV(const char* Nombre_Archivo, char Delimitador, Datos_CSV* Datos_Excel) {
-    //Este subprograma se utiliza para leer los datos de un CSV.
+static int Leer_CSV(const char* Nombre_Archivo, wchar_t Delimitador, Datos_CSV* Datos_Excel) {
     FILE* Archivo = fopen(Nombre_Archivo, "r");
     if (!Archivo) {
         perror("No se pudo abrir el archivo \n");
@@ -22,23 +28,23 @@ static int Leer_CSV(const char* Nombre_Archivo, char Delimitador, Datos_CSV* Dat
     Datos_Excel->Filas = 0;
     Datos_Excel->Columnas = 0;
 
-    char Linea[1024];
+    wchar_t Linea[1024];
     int i = 0;
 
     int capacidad = 10;
-    Datos_Excel->Datos = malloc(capacidad * sizeof(char**));
+    Datos_Excel->Datos = malloc(capacidad * sizeof(wchar_t**));
     if (Datos_Excel->Datos == NULL) {
         perror("Error allocating memory");
         fclose(Archivo);
         return ERROR;
     }
 
-    while (fgets(Linea, 1024, Archivo)) {
-        if (Linea[0] == '\n') continue;
+    while (fgetws(Linea, 1024, Archivo)) {
+        if (Linea[0] == L'\n') continue;
 
         if (Numero_Lineas == capacidad) {
             capacidad *= 2;
-            char*** temp = realloc(Datos_Excel->Datos, capacidad * sizeof(char**));
+            wchar_t*** temp = realloc(Datos_Excel->Datos, capacidad * sizeof(wchar_t**));
             if (temp == NULL) {
                 perror("Error reallocating memory");
                 Liberar_Memoria_Csv(Datos_Excel);
@@ -48,41 +54,40 @@ static int Leer_CSV(const char* Nombre_Archivo, char Delimitador, Datos_CSV* Dat
             Datos_Excel->Datos = temp;
         }
 
-        //Se cuenta el numero de columnas
-        char DelimitadorStr[2] = { Delimitador, '\0' };
-        char* Token = strtok(Linea, DelimitadorStr);
+        wchar_t DelimitadorStr[2] = { Delimitador, L'\0' };
+        wchar_t* Token;
+        wchar_t* next_token;
+        Token = wcstok(Linea, DelimitadorStr, &next_token);
         int current_columns = 0;
         while (Token != NULL) {
             current_columns++;
-            Token = strtok(NULL, DelimitadorStr);
+            Token = wcstok(NULL, DelimitadorStr, &next_token);
         }
 
         if (current_columns > Numero_Columnas) {
             Numero_Columnas = current_columns;
         }
-        //Se cuenta el numero de filas.
         Numero_Lineas++;
 
-        Datos_Excel->Datos[i] = malloc(Numero_Columnas * sizeof(char*));
+        Datos_Excel->Datos[i] = malloc(Numero_Columnas * sizeof(wchar_t*));
         if (Datos_Excel->Datos[i] == NULL) {
             perror("Error allocating memory");
-            Liberar_Memoria_Csv(Datos_Excel, Numero_Lineas, Numero_Columnas);
+            Liberar_Memoria_Csv(Datos_Excel);
             fclose(Archivo);
             return ERROR;
         }
 
-        Token = strtok(Linea, DelimitadorStr);
+        Token = wcstok(Linea, DelimitadorStr, &next_token);
         for (int j = 0; j < Numero_Columnas; j++) {
             if (Token != NULL) {
-                Datos_Excel->Datos[i][j] = malloc(strlen(Token) + 1); // Allocate memory
+                Datos_Excel->Datos[i][j] = wcsdup(Token);
                 if (Datos_Excel->Datos[i][j] == NULL) {
                     perror("Error allocating memory");
-                    Liberar_Memoria_Csv(Datos_Excel, Numero_Lineas, Numero_Columnas);
+                    Liberar_Memoria_Csv(Datos_Excel);
                     fclose(Archivo);
                     return ERROR;
                 }
-                strcpy(Datos_Excel->Datos[i][j], Token); // Copy the string
-                Token = strtok(NULL, DelimitadorStr);
+                Token = wcstok(NULL, DelimitadorStr, &next_token);
             }
             else {
                 Datos_Excel->Datos[i][j] = NULL;
@@ -97,6 +102,7 @@ static int Leer_CSV(const char* Nombre_Archivo, char Delimitador, Datos_CSV* Dat
     fclose(Archivo);
     return EXITO;
 }
+
 
 
 

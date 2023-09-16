@@ -12,15 +12,15 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-#ifdef _WIN32
-#define strcasecmp _stricmp
-#endif
+
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 	/* Add your function declarations here */
+
 
 #ifdef __cplusplus
 }

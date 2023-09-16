@@ -2,7 +2,7 @@
 #include "Funciones_Auxiliares.h"
 #include "Tipos_Optimizacion.h"
 #include <stdio.h>
-
+#include <wchar.h>
 //Se definen una serie de constantes
 //El numero de columnas que ha de
 //tener el CSV del precio
@@ -19,7 +19,26 @@
 #define Primera_Fila_Csv_Precio       1
 
 #define PRIMERA_COLUMNA               0
+#define Fila_Encabezados              0
 #define Segundos_Dos_Horas            7200
+
+static int Comprobar_Encabezados_Csv_Precios (Datos_CSV *Datos_Precio) {
+	//Este subprograma se utiliza para comprobar 
+	//que los datos de los encabezazdos son
+	//correctos.
+
+	const wchar_t* Encabezados [] = { L"Año",L"Mes",L"Dia",L"Hora",L"Precio kWh"};
+
+	for (int Numero_Columna = 0; Numero_Columna < Datos_Precio->Columnas; Numero_Columna) {
+
+		if (!Strings_Iguales(Datos_Precio->Datos[Fila_Encabezados][Numero_Columna], 
+			Encabezados[Numero_Columna])) {
+			printf("Error el encabezado no es correcto\n");
+			return ERROR;
+		}
+	}
+	return EXITO;
+}
 static int Comprobar_Formato_Dato_Tiempo_Precio(Datos_CSV *Datos_Precio, const int Numero_Columna) {
 	//Este subprograma se utiliza para comprobar que 
 	//los datos temporales relacionados con los
@@ -52,7 +71,7 @@ static int Comprobar_Precio(const Datos_CSV *Datos_Precio, const char *Nombre_Ar
 	//en formato string otra en 
 	//formato numerico
 	
-	char*  Precio_String;
+	wchar_t*  Precio_String;
 	double Precio_Num;
 
 	int Numero_Filas = Datos_Precio->Filas;
@@ -342,6 +361,37 @@ static int Comprobar_Fecha_Precios(Datos_CSV *Datos_Precio_Compra, Datos_CSV *Da
 	}
 	return EXITO;
 }
+
+int Comprobar_Encabezados_Precios(Datos_CSV *Datos_Precio_Compra,Datos_CSV *Datos_Precio_Venta) {
+
+	//Este subprograma se utiliza para comprobar
+	//que los encabezados del CSV de los precios
+	//son los correctos-> Primero se definen los
+	//valores de estos encabezados y despues se 
+	//llama al subprograma que comprueba que los
+	//encabezados del CSV coinciden.
+
+	const wchar_t* Valores_Aceptables[] = { L"Año",L"Mes",L"Dia",L"Hora",L"Precio kWh" };
+	const int Numero_Encabezados = sizeof(Valores_Aceptables) / sizeof(Valores_Aceptables[0]);
+
+	
+	if (Verificar_Encabezado_CSV(Datos_Precio_Compra, Valores_Aceptables,
+		Numero_Encabezados, "Datos de los Precios de compra") == ERROR) {
+		printf("Los encabezados del CSV de los precios de compra son incorrectos\n");
+		return ERROR;
+	}
+
+    if (Verificar_Encabezado_CSV(Datos_Precio_Venta, Valores_Aceptables,
+	Numero_Encabezados, "Datos de los Precios de Venta") == ERROR) {
+	printf("Los encabezados del CSV de los precios de venta son incorrectos\n");
+	return ERROR;
+    }
+
+
+    return EXITO;
+
+}
+
 int Verificar_Precios(Datos_CSV* Datos_Precio_Compra, Datos_CSV *Datos_Precio_Venta,
 	                   Datos_CSV* Datos_Algoritmo) {
 	//Este subprograma se utiliza para
@@ -359,20 +409,13 @@ int Verificar_Precios(Datos_CSV* Datos_Precio_Compra, Datos_CSV *Datos_Precio_Ve
 	//3.El orden cronologio de los 
 	//precios tiene sentido.
 
-	if (Comprobar_Dimensiones_CSV_Variable(Datos_Precio_Compra, Numero_Minimo_Filas_Precio, 
-		                                Numero_Columnas_Precio,"Precio Compra kWh") == ERROR) {
-		return ERROR;
-	}
-
-	if (Comprobar_Dimensiones_CSV_Variable(Datos_Precio_Venta, Numero_Minimo_Filas_Precio,
-		Numero_Columnas_Precio, "Precio Venta kWh") == ERROR) {
-		return ERROR;
-	}
 
 	if (Comprobar_Dimensiones_Csv_Precios(Datos_Precio_Compra, Datos_Precio_Venta) == ERROR) {
 		return ERROR;
 	}
-
+	if (Comprobar_Encabezados_Precios(Datos_Precio_Compra,Datos_Precio_Venta)==ERROR) {
+		return ERROR;
+	}
 	if (Comprobar_Formato_Precios(Datos_Precio_Compra, Datos_Precio_Venta) == ERROR) {
 		return ERROR;
 	}

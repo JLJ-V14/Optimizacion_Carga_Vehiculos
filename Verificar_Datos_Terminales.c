@@ -4,6 +4,8 @@
 #include "Tipos_Optimizacion.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <wchar.h>
+#include <wctype.h>
 
 //Defino las dimensiones que tiene el CSV de la informacion de los terminales
 #define   Numero_Filas_Csv_Terminales    13
@@ -11,15 +13,15 @@
 
 //Defino los valores que han de tener los encabezados->
 
-#define  Encabezado_Numero_Terminal "Numero Terminal"
-#define  Encabezado_Fase            "Fase "
+#define  Encabezado_Numero_Terminal L"Numero Terminal"
+#define  Encabezado_Fase            L"Fase "
 //Defino las posiciones en el CSV donde se encuentra alguna
 //informacion->
 
 #define  Columna_Encabezados  0
 
 
-static int Comprobar_Numero_Terminal(const char *Terminal, const int Terminal_Actual) {
+static int Comprobar_Numero_Terminal(const wchar_t *Terminal, const int Terminal_Actual) {
 	//Este subprogram se utiliza para commprobar
 	//que  el dato de numero de terminal es
 	//correcto, comprobando que :
@@ -43,14 +45,14 @@ static int Comprobar_Numero_Terminal(const char *Terminal, const int Terminal_Ac
 	}
 	return EXITO;
 }
-static int Comprobar_Fase_Terminal(const char *Fase) {
+static int Comprobar_Fase_Terminal(const wchar_t *Fase) {
 	//Este subprograma se utiliza para comprobar
 	//que la fase asignada a cada terminal 
 	//corresponde con R S T N o Neutro y Nada
 
-	const char* Valores_Aceptables[] = { "R","S","T","Neutro","Nada" };
+	const wchar_t * Valores_Aceptables[] = { L"R",L"S",L"T",L"Neutro",L"Nada" };
 	const int Numero_Valores_Aceptables = sizeof(Valores_Aceptables) / sizeof(Valores_Aceptables[0]);
-	bool Es_Valido = false;
+
 
 	for (int i = 0; i < Numero_Valores_Aceptables; i++) {
 		if (Strings_Iguales(Fase, Valores_Aceptables[i])) {
@@ -71,13 +73,12 @@ static int Comprobar_Informacion_Terminales(Datos_CSV *Datos_Terminales) {
 	//es un valor valido, R S T Neutro o nada.
 
 	for (int Numero_Terminal = 1; Numero_Terminal <= Numero_Terminales; Numero_Terminal++) {
-		if (Comprobar_Numero_Terminal(Datos_Terminales->Datos[Fila_Numero_Terminal][Numero_Terminal], 
+		if (Comprobar_Numero_Terminal(Datos_Terminales->Datos[Numero_Terminal][Columna_Numero_Terminal], 
 			Numero_Terminal) == ERROR) {
 			printf("Error el Numero de terminal en la columna %d no es correcto\n", Numero_Terminal);
 			return ERROR;
 		}
-		if (Comprobar_Fase_Terminal(Datos_Terminales->Datos[Fila_Fase]
-			[Numero_Terminal])==ERROR) {
+		if (Comprobar_Fase_Terminal(Datos_Terminales->Datos[Numero_Terminal][Columna_Fase])==ERROR) {
 			printf("Error la fase del terminal en la columna %d no es correcta\n", Numero_Terminal);
 			return ERROR;
 
@@ -86,21 +87,21 @@ static int Comprobar_Informacion_Terminales(Datos_CSV *Datos_Terminales) {
 	return EXITO;
 }
 
-static int Verificar_Encabezados(Datos_CSV *Datos_Terminales) {
+static int Verificar_Encabezados_Terminales(Datos_CSV *Datos_Terminales) {
 	//Este subprograma se utiliza para
 	//verificar que los encabezados del 
 	//CSV de los terminales son correctos->
 	
-	if (Strings_Iguales(Datos_Terminales->Datos[Fila_Numero_Terminal][Columna_Encabezados],
-	   Encabezado_Numero_Terminal)==false) {
-		printf("Error en la primera fila y primera columna, debe poner Numero_Terminal \n");
+	const wchar_t* Valores_Aceptables[] = { L"Numero Terminal",L"Fase"};
+	const int Numero_Encabezados = sizeof(Valores_Aceptables) / sizeof(Valores_Aceptables[0]);
+
+	if (Verificar_Encabezado_CSV(Datos_Terminales, Valores_Aceptables,
+		Numero_Encabezados, "Datos de los terminales de la placa de redistribucion") == ERROR) {
+		printf("Los encabezados del CSV de los datos de los terminales son incorrectos\n");
 		return ERROR;
 	}
-	if (Strings_Iguales(Datos_Terminales->Datos[Fila_Fase][Columna_Encabezados],
-		Encabezado_Fase) == false) {
-		printf("Error en la primera fila y segunda columna, debe poner Fase \n");
-		return ERROR;
-	}
+
+	
 	return EXITO;
 }
 int Verificar_Datos_Terminales(Datos_CSV* Datos_Terminales) {
@@ -117,7 +118,7 @@ int Verificar_Datos_Terminales(Datos_CSV* Datos_Terminales) {
 		return ERROR;
 	}
 
-	if (Verificar_Encabezados(Datos_Terminales) == ERROR) {
+	if (Verificar_Encabezados_Terminales(Datos_Terminales) == ERROR) {
 		printf("Los encabezados en el CSV de los terminales son incorrectos \n");
 		return ERROR;
 	}

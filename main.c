@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include "Inicializar_Variables.h"
+#include "Inicializar_Programa.h"
 #include "Definiciones_Globales.h"
 #include "Liberar_Memoria.h"
 #include "Leer_Entradas.h"
@@ -8,7 +8,7 @@
 #include "csv.h"
 #include "Tipos_Optimizacion.h"
 #include "Verificar_Entradas.h"
-
+#include  <locale.h>
 #pragma comment(lib, "OSQPLIB.lib")
 
 
@@ -24,13 +24,16 @@ int main() {
 	Datos_CSV *Datos_Precio_Venta;
 	Datos_CSV *Datos_Terminales;
 
+
+   
+
 	//Se reserva espacio en memoria para las variables
 	//que almacenan los CSVs.
 
-	if (Inicializar_Csvs(&Datos_Algoritmo, &Datos_Vehiculos, &Datos_Baterias,
+	if (Inicializar_Algoritmo(&Datos_Algoritmo, &Datos_Vehiculos, &Datos_Baterias,
 		&Datos_Restricciones, &Datos_Precio_Compra,
 		&Datos_Precio_Venta, &Datos_Terminales) == ERROR) {
-		printf("No se ha podido reservar memoria para los Datos de los Csv \n");
+		printf("Error en la inicializacion del algoritmo \n");
 		return(Salida_Error);
 
 	}

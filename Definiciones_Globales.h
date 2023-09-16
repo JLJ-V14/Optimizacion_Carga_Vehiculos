@@ -89,6 +89,10 @@
 //Se define informacion relacionada con los
 //terminales de la placa de redistribucion.
 #define Numero_Terminales 12
-#define  Fila_Numero_Terminal 0
-#define  Fila_Fase            1
+#define  Columna_Numero_Terminal 0
+#define  Columna_Fase            1
+
+//Defino la fila donde se encuentran los
+//encabezados en los CSVs
+#define Fila_Encabezados 0
 #endif

@@ -1,6 +1,1 @@
-﻿  Verificar_Precios.c
-F:\Optimizacion\Project1\Project1\Verificar_Precios.c(91,63): warning C4090: 'function': different 'const' qualifiers
-F:\Optimizacion\Project1\Project1\Verificar_Precios.c(95,62): warning C4090: 'function': different 'const' qualifiers
-F:\Optimizacion\Project1\Project1\Verificar_Precios.c(189,15): warning C4098: 'Verificar_Precios': 'void' function returning a value
-F:\Optimizacion\Project1\Project1\Verificar_Precios.c(193,15): warning C4098: 'Verificar_Precios': 'void' function returning a value
-F:\Optimizacion\Project1\Project1\Verificar_Precios.c(196,14): warning C4098: 'Verificar_Precios': 'void' function returning a value
+﻿  Funciones_Auxiliares.c
