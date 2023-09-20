@@ -77,7 +77,7 @@ bool Strings_Iguales(const char* String_1, const char* String_2) {
 int  Convertir_A_Entero(wchar_t* Str, int *Num) {
 	//Este subprograma se utiliza
 	//para convertir un dato de 
-	//tipo string a una variable de
+	//tipo wchar a una variable de
 	//tipo int.
 
 	//Puntero_Final se utiliza para comprobar
@@ -266,3 +266,43 @@ int Verificar_Encabezado_CSV(Datos_CSV* Datos_Excel, const wchar_t* Valores_Enca
 	}
 	return EXITO;
 }
+
+bool Comprobar_Porcentaje_Bateria(const double Porcentaje_Bateria) {
+    //Este subprograma se utiliza para
+	//comprobar que el porcentaje de 
+	//bateria se encuentra entre 0 y 1
+
+	return ((Porcentaje_Bateria >= 0) && (Porcentaje_Bateria <= 1));
+}
+
+
+int Verificar_Numero_Terminal (const wchar_t *Numero_Terminal,const int Numero_Fila) {
+	//Este subprograma se utiliza
+	//para verificar que el dato 
+	//de terminal es correcto.
+
+	//Se comprueba que el numero 
+	//del terminal esté dentro del 
+	//rango y que sea un dato numerico
+	//no decimal.
+	
+	if (!Es_Un_Numero(Numero_Terminal, Decimal_No_Incluido)) {
+		printf("El numero de Terminal en la fila %d no es un numero natural\n", Numero_Fila);
+		return ERROR;
+	}
+	int Num_Terminal = 0;
+
+	if (Convertir_A_Entero(Numero_Terminal, &Num_Terminal) == ERROR) {
+		printf("El Dato del terminal no se pudo convertir a dato numerico\n");
+		return ERROR;
+	}
+
+
+	if ((Num_Terminal < 1) || (Num_Terminal > Numero_Terminales)) {
+		printf("Error el numero de terminales ha de estar entre 1 y"
+		"%d en el CSV de los vehiculos\n", Numero_Terminales);
+		return ERROR;
+	}
+	return EXITO;
+}
+

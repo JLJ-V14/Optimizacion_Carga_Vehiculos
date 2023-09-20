@@ -95,4 +95,44 @@
 //Defino la fila donde se encuentran los
 //encabezados en los CSVs
 #define Fila_Encabezados 0
+
+//Defino las columnas donde se encuentra
+//la informacion en el CSV de los vehiculos
+#define Columna_Csv_Vehiculos_Terminal         0
+#define Columna_Csv_Vehiculos_Modo_Carga       1
+#define Columna_Csv_Vehiculos_Capacidad        2
+#define Columna_Csv_Vehiculos_Bateria_Inicial  3
+#define Columna_Csv_Vehiculos_Bateria_Final    4
+#define Columna_Csv_Vehiculos_Maxima_Potencia  5
+#define Columna_Csv_Vehiculos_Anyo_Inicial     6
+#define Columna_Csv_Vehiculos_Mes_Inicial      7
+#define Columna_Csv_Vehiculos_Dia_Inicial      8
+#define Columna_Csv_Vehiculos_Hora_Inicial     9
+#define Columna_Csv_Vehiculos_Minuto_Inicial   10 
+#define Columna_Csv_Vehiculos_Anyo_Final       11
+#define Columna_Csv_Vehiculos_Mes_Final        12
+#define Columna_Csv_Vehiculos_Dia_Final        13
+#define Columna_Csv_Vehiculos_Hora_Final       14
+#define Columna_Csv_Vehiculos_Minuto_Final     15
+
+//Defino la informacion donde se encuentra la
+//informacion en el CSV de los vehiculos
+#define Columna_Csv_Baterias_Terminal               0 
+#define Columna_Csv_Baterias_Objetivo_Carga         1 
+#define Columna_Csv_Baterias_Capacidad              2
+#define Columna_Csv_Baterias_Bateria_Inicial        3
+#define Columna_Csv_Baterias_Bateria_Final          4
+#define Columna_Csv_Baterias_Maxima_Potencia        5
+#define Columna_Csv_Baterias_Anyo_Inicial           6
+#define Columna_Csv_Baterias_Mes_Inicial            7
+#define Columna_Csv_Baterias_Dia_Inicial            8
+#define Columna_Csv_Baterias_Hora_Inicial           9
+#define Columna_Csv_Baterias_Minuto_Inicial         10 
+#define Columna_Csv_Baterias_Anyo_Final             11
+#define Columna_Csv_Baterias_Mes_Final              12
+#define Columna_Csv_Baterias_Dia_Final              13
+#define Columna_Csv_Baterias_Hora_Final             14
+#define Columna_Csv_Baterias_Minuto_Final           15
+
+
 #endif
