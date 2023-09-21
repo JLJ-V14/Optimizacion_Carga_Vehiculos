@@ -6,7 +6,6 @@
 #include "Portabilidad.h"
 #include "Tipos_Optimizacion.h"
 #include "time.h"
-
 #include <ctype.h>
 #include <locale.h>
 #include <stdbool.h>
@@ -185,6 +184,10 @@ int  Comprobar_Orden_Fechas  (const struct tm Fecha_Anterior, const struct tm Fe
 	Tiempo_Anterior  = mktime(&Fecha_Anterior_Aux);
 	Tiempo_Posterior = mktime(&Fecha_Posterior_Aux);
 
+	if ((Tiempo_Anterior == -1) || (Tiempo_Posterior == -1)) {
+		return ERROR;
+	}
+
 	if (Tiempo_Anterior < Tiempo_Posterior) {
 		return EXITO;
 	}
@@ -301,6 +304,114 @@ int Verificar_Numero_Terminal (const wchar_t *Numero_Terminal,const int Numero_F
 	if ((Num_Terminal < 1) || (Num_Terminal > Numero_Terminales)) {
 		printf("Error el numero de terminales ha de estar entre 1 y"
 		"%d en el CSV de los vehiculos\n", Numero_Terminales);
+		return ERROR;
+	}
+	return EXITO;
+}
+
+void Cargar_Fecha_Algoritmo(Datos_CSV *Datos_Algoritmo,struct tm *Fecha_Inicial_Algoritmo,
+	                        struct tm *Fecha_Final_Algoritmo) {
+	//Este subprograma se utiliza para 
+	//cargar la fecha de inicio y finalizacion
+	//del Algoritmo en dos variables.
+
+	Cargar_Fecha(Datos_Algoritmo, Fecha_Inicial_Algoritmo, Columna_Anyo_Inicio_Algoritmo,
+	Columna_Mes_Inicio_Algoritmo, Columna_Dia_Inicio_Algoritmo, Columna_Hora_Inicio_Algoritmo,
+	Columna_Minuto_Inicio_Algoritmo, Fila_Datos_Algoritmo, Si_Incluir_Minuto);
+
+
+	Cargar_Fecha(Datos_Algoritmo, Fecha_Final_Algoritmo, Columna_Anyo_Final_Algoritmo,
+	Columna_Mes_Final_Algoritmo, Columna_Dia_Final_Algoritmo, Columna_Hora_Final_Algoritmo,
+	Columna_Minuto_Final_Algoritmo, Fila_Datos_Algoritmo, Si_Incluir_Minuto);
+
+}
+
+void Cargar_Fecha_Carga(Datos_CSV *Datos_Carga, struct tm *Fecha_Inicial_Carga,
+	                    struct tm *Fecha_Final_Carga, const int Numero_Fila) {
+
+	//Este subprograma se utiliza para 
+	//cargar la fecha de inicio o
+	//finalizacion de un vehiculo 
+	//o bateria.
+
+	Cargar_Fecha(Datos_Carga, Fecha_Inicial_Carga, Columna_Csv_Carga_Anyo_Inicial,
+		Columna_Csv_Carga_Mes_Inicial, Columna_Csv_Carga_Dia_Inicial,
+		Columna_Csv_Carga_Hora_Inicial, Columna_Csv_Carga_Minuto_Inicial,
+		Numero_Fila, Si_Incluir_Minuto);
+
+	Cargar_Fecha(Datos_Carga, Fecha_Final_Carga, Columna_Csv_Carga_Anyo_Final,
+		Columna_Csv_Carga_Mes_Final, Columna_Csv_Carga_Dia_Final,
+		Columna_Csv_Carga_Hora_Final, Columna_Csv_Carga_Minuto_Final,
+		Numero_Fila, Si_Incluir_Minuto);
+}
+
+int Comprobar_Fecha_Carga(struct tm Fecha_Inicial_Algoritmo, struct tm Fecha_Final_Algoritmo,
+	                      struct tm Fecha_Inicial_Carga,     struct tm Fecha_Final_Carga) {
+
+	//Para un vehiculo o bateria se comprueba que:
+	//Las fechas de inicio y finalizacion de carga 
+	//estan dentro de la ventana temporal del algoritmo
+	//La fecha de inicio y finalizacion tienen sentido 
+	//es decir la fecha de finalizacion es posterior a 
+	//la de inicio.
+
+	if (Comprobar_Orden_Fechas(Fecha_Inicial_Algoritmo, Fecha_Inicial_Carga,
+		Incluir_Fecha_Igual) == ERROR) {
+		printf("Error la carga del vehiculo no puede empezar "
+		"antes que el inicio del algoritmo\n");
+		return ERROR;
+	}
+	if (Comprobar_Orden_Fechas(Fecha_Final_Carga, Fecha_Final_Algoritmo,
+		Incluir_Fecha_Igual) == ERROR) {
+		printf("Error la carga del vehiculo no puede terminar más tarde"
+		"que el fin del algoritmo\n");
+		return ERROR;
+	}
+	if (Comprobar_Orden_Fechas(Fecha_Inicial_Carga, Fecha_Final_Carga,
+		Incluir_Fecha_Igual) == ERROR) {
+		printf("Error la fecha de inicio de la carga debe ser"
+		"anterior a la fecha del posterior\n");
+		return ERROR;
+	}
+	return EXITO;
+}
+int Verificar_Fecha_Carga(Datos_CSV *Datos_Carga, Datos_CSV * Datos_Algoritmo,
+	                      const int Numero_Fila) {
+	//Este subprograma se utiliza
+	//para verificar que la fecha
+	//de carga de un vehiculo o 
+	//bateria es correcta.
+
+	//Para un vehiculo o bateria se comprueba que:
+	//Las fechas de inicio y finalizacion de carga 
+	//estan dentro de la ventana temporal del algoritmo
+	//La fecha de inicio y finalizacion tienen sentido 
+	//es decir la fecha de finalizacion es posterior a 
+	//la de inicio.
+
+	//Las entradas para este subprograma son:
+	
+	//1. Los datos del CSV que contiene la informacion 
+	//de los vehiculos o baterias,
+	//2. El CSV que contiene la informacion del algoritmo
+	//3. El numero de fila del CSV de los vehiculos o baterias
+	//en otras palabras el numero de vehiculo o bateria a revisar
+
+	struct tm Fecha_Inicial_Algoritmo = { 0 };
+	struct tm Fecha_Final_Algoritmo   = { 0 };
+	struct tm Fecha_Inicial_Carga     = { 0 };
+	struct tm Fecha_Final_Carga       = { 0 };
+
+	Cargar_Fecha_Algoritmo(Datos_Algoritmo, &Fecha_Inicial_Algoritmo,
+    &Fecha_Final_Algoritmo);
+
+	Cargar_Fecha_Carga(Datos_Carga, &Fecha_Inicial_Carga,
+	&Fecha_Final_Carga,Numero_Fila);
+
+	//Se pasa a comprobar que el orden de fechas es correcto
+	if (Comprobar_Fecha_Carga(Fecha_Inicial_Algoritmo,
+		Fecha_Final_Algoritmo,Fecha_Inicial_Carga,
+		Fecha_Final_Carga) == ERROR) {
 		return ERROR;
 	}
 	return EXITO;

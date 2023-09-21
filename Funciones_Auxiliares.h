@@ -34,7 +34,10 @@ extern "C" {
 		const int Numero_Columnas_Exactas, const char* Tipo_CSV);
 	int  Convertir_A_Decimal(wchar_t* str, double* Num);
 	int  Convertir_A_Entero(wchar_t* Str, int* Num);
+	int Verificar_Fecha_Carga(Datos_CSV* Datos_Carga, Datos_CSV* Datos_Algoritmo,
+		const int Numero_Fila);
 	int Verificar_Numero_Terminal(const wchar_t* Numero_Terminal, const int Numero_Fila);
+	
 	
 	
 

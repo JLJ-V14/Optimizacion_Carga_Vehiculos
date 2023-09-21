@@ -130,6 +130,8 @@ static int Verificar_Datos_Bateria_Vehiculo(Datos_CSV *Datos_CSV,const int Numer
 
 }
 
+
+
 static int Comprobar_Datos_Csv_Vehiculos(Datos_CSV* Datos_Vehiculos, Datos_CSV* Datos_Algoritmo) {
 	//Este subprograma se utiliza para
 	//comprobar que los datos de los 
@@ -162,6 +164,12 @@ static int Comprobar_Datos_Csv_Vehiculos(Datos_CSV* Datos_Vehiculos, Datos_CSV* 
 			printf("Los Datos de la bateria del vehiculo en la fila %d son incorrectos",Numero_Fila);
 			return ERROR;
 		}
+
+		if (Verificar_Fecha_Carga(Datos_Vehiculos, Datos_Algoritmo, Numero_Fila) == ERROR) {
+			printf("Los Datos de fecha del vehiculo en la fila %d son incorrectos", Numero_Fila);
+			return ERROR;
+		}
+		
 
 	}
 	return EXITO;
