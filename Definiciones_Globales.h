@@ -7,7 +7,7 @@
 
 //Constantes para los codigos de error del main
 
-#define Salida_Error 1 
+#define SALIDA_ERROR 1 
 //Una constante para el subprograma que compara
 //las fechas
 
@@ -129,4 +129,15 @@
 #define Columna_Csv_Carga_Dia_Final       13
 #define Columna_Csv_Carga_Hora_Final      14
 #define Columna_Csv_Carga_Minuto_Final    15
+
+//Se define el nombre de los archivos.csv que
+//contienen la informacion de entrada
+
+#define INFORMACION_TERMINALES            "Informacion_Terminales.csv"
+#define INFORMACION_VEHICULOS             "Informacion_Vehiculos.csv"
+#define INFORMACION_BATERIAS              "Informacion_Baterias.csv"
+#define INFORMACION_ALGORITMO             "Informacion_Algoritmo.csv"
+#define INFORMACION_PRECIO_COMPRA         "Precio_Compra_Kilovatio.csv"
+#define INFORMACION_PRECIO_VENTA          "Precio_Venta_Kilovatio.csv"
+#define INFORMACION_RESTRICCIONES_SISTEMA "Restricciones_Sistema.csv"
 #endif

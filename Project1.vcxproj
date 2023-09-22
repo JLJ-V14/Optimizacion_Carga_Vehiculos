@@ -130,37 +130,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Funciones_Auxiliares.c" />
-    <ClCompile Include="Inicializar_Programa.c" />
-    <ClCompile Include="Leer_Entradas.c" />
+    <ClCompile Include="conversion_numeros.c" />
+    <ClCompile Include="inicializar_programa.c" />
+    <ClCompile Include="leer_entradas.c" />
     <ClCompile Include="libcsv.c" />
-    <ClCompile Include="Liberar_Memoria.c" />
+    <ClCompile Include="liberar_memoria.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="Verificar_Baterias.c" />
-    <ClCompile Include="Verificar_Datos_Algoritmo.c" />
-    <ClCompile Include="Verificar_Datos_Terminales.c" />
-    <ClCompile Include="Verificar_Entradas.c" />
-    <ClCompile Include="Verificar_Precios.c" />
-    <ClCompile Include="Verificar_Restricciones.c" />
-    <ClCompile Include="Verificar_Vehiculos.c" />
+    <ClCompile Include="operaciones_csv.c" />
+    <ClCompile Include="operaciones_fecha.c" />
+    <ClCompile Include="operaciones_string.c" />
+    <ClCompile Include="registrar_errores.c" />
+    <ClCompile Include="validaciones.c" />
+    <ClCompile Include="verificar_baterias.c" />
+    <ClCompile Include="verificar_datos_algoritmo.c" />
+    <ClCompile Include="verificar_datos_terminales.c" />
+    <ClCompile Include="verificar_entradas.c" />
+    <ClCompile Include="verificar_precios.c" />
+    <ClCompile Include="verificar_restricciones.c" />
+    <ClCompile Include="verificar_vehiculos.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="conversion_numeros.h" />
     <ClInclude Include="csv.h" />
-    <ClInclude Include="Definiciones_Globales.h" />
-    <ClInclude Include="Funciones_Auxiliares.h" />
-    <ClInclude Include="Inicializar_Programa.h" />
-    <ClInclude Include="Leer_Entradas.h" />
-    <ClInclude Include="Liberar_Memoria.h" />
+    <ClInclude Include="definiciones_globales.h" />
+    <ClInclude Include="inicializar_programa.h" />
+    <ClInclude Include="leer_entradas.h" />
+    <ClInclude Include="liberar_memoria.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Portabilidad.h" />
-    <ClInclude Include="Tipos_Optimizacion.h" />
-    <ClInclude Include="Verificar_Baterias.h.h" />
-    <ClInclude Include="Verificar_Datos_Algoritmo.h" />
-    <ClInclude Include="Verificar_Datos_Terminales.h" />
-    <ClInclude Include="Verificar_Entradas.h" />
-    <ClInclude Include="Verificar_Precios.h" />
-    <ClInclude Include="Verificar_Restricciones.h" />
-    <ClInclude Include="Verificar_Vehiculos.h" />
+    <ClInclude Include="operaciones_csv.h" />
+    <ClInclude Include="operaciones_fecha.h" />
+    <ClInclude Include="operaciones_string.h" />
+    <ClInclude Include="portabilidad.h" />
+    <ClInclude Include="registrar_errores.h" />
+    <ClInclude Include="tipos_optimizacion.h" />
+    <ClInclude Include="validaciones.h" />
+    <ClInclude Include="verificar_Baterias.h.h" />
+    <ClInclude Include="verificar_datos_algoritmo.h" />
+    <ClInclude Include="verificar_datos_terminales.h" />
+    <ClInclude Include="verificar_entradas.h" />
+    <ClInclude Include="verificar_precios.h" />
+    <ClInclude Include="verificar_restricciones.h" />
+    <ClInclude Include="verificar_vehiculos.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

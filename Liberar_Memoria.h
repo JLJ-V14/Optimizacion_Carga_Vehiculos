@@ -1,25 +1,29 @@
-
+/*
+   En este archivo.h y el correspondiente.c se encuentran los
+   archivos relacionados con liberar espacio en memoria reservado
+   a las diferentes variables que se usan en el programa.
+*/
 
 #ifndef LIBERAR_MEMORIA_H
 #define LIBERAR_MEMORIA_H
 
-/* Include files */
-
-#include <stddef.h>
-#include <stdlib.h>
-#include "Tipos_Optimizacion.h"
+#include "tipos_optimizacion.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-	void Liberar_Memoria_Csv(Datos_CSV* Datos_Excel);
-    void Liberar_Memoria_Csvs(Datos_CSV* Datos_Vehiculos, Datos_CSV* Datos_Algoritmo,
-        Datos_CSV* Datos_Baterias, Datos_CSV* Datos_Precio_Compra,
-        Datos_CSV* Datos_Precio_Venta, Datos_CSV* Restricciones_Sistema,
-        Datos_CSV* Datos_Restricciones);
+
+    // Libera memoria para un solo conjunto de datos CSV.
+    void liberar_memoria_csv_individual(datos_csv_t* datos_csv);
+
+    // Libera memoria para múltiples conjuntos de datos CSV.
+    void liberar_memoria_csvs(datos_csv_t* datos_vehiculos, datos_csv_t* datos_algoritmo,
+        datos_csv_t* datos_baterias, datos_csv_t* datos_precio_compra,
+        datos_csv_t* datos_precio_venta, datos_csv_t* restricciones_sistema,
+        datos_csv_t* datos_restricciones);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif 

@@ -1,2 +1,2 @@
-﻿  Funciones_Auxiliares.c
-F:\Optimizacion\Project1\Project1\Funciones_Auxiliares.c(295,40): warning C4090: 'function': different 'const' qualifiers
+﻿  liberar_memoria.c
+c1 : fatal  error C1356: unable to find mspdbcore.dll

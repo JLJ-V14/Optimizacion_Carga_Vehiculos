@@ -1,96 +1,59 @@
-#include "Definiciones_Globales.h"
-#include "Tipos_Optimizacion.h"
 #include <locale.h>
-#include "Liberar_Memoria.h"
-#include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include "definiciones_globales.h"
+#include "portabilidad.h"
+#include "tipos_optimizacion.h"
 
-static void Inicializar_Numero_Filas_Columnas(Datos_CSV* Datos_Algoritmo,     Datos_CSV* Datos_Vehiculos,
-	                                          Datos_CSV* Datos_Baterias,      Datos_CSV* Datos_Restricciones,
-	                                          Datos_CSV* Datos_Precio_Compra, Datos_CSV* Datos_Precio_Venta,
-	                                          Datos_CSV* Datos_Terminales) {
-	//Se usa este subprograma para
-	//inicializar el numero de filas y
-	//columnas que tiene cada CSV 
-	// a 0.
-
-	Datos_Algoritmo->Filas = 0;
-	Datos_Algoritmo->Columnas = 0;
-	Datos_Vehiculos->Filas = 0;
-	Datos_Vehiculos->Columnas = 0;
-	Datos_Baterias->Filas = 0;
-	Datos_Baterias->Columnas = 0;
-	Datos_Restricciones->Filas = 0;
-	Datos_Restricciones->Columnas = 0;
-	Datos_Precio_Compra->Filas = 0;
-	Datos_Precio_Compra->Columnas = 0;
-	Datos_Precio_Venta->Filas = 0;
-	Datos_Precio_Venta->Columnas = 0;
-	Datos_Terminales->Filas = 0;
-	Datos_Terminales->Columnas = 0;
-
-
-}
-int Inicializar_Csvs (Datos_CSV ** Datos_Algoritmo,     Datos_CSV **Datos_Vehiculos,
-	                  Datos_CSV ** Datos_Baterias,      Datos_CSV **Datos_Restricciones,
-	                  Datos_CSV ** Datos_Precio_Compra, Datos_CSV **Datos_Precio_Venta,
-	                  Datos_CSV ** Datos_Terminales) {
-	
-	*Datos_Algoritmo     = malloc(sizeof(Datos_CSV));
-	*Datos_Vehiculos     = malloc(sizeof(Datos_CSV));
-	*Datos_Baterias      = malloc(sizeof(Datos_CSV));
-	*Datos_Restricciones = malloc(sizeof(Datos_CSV));
-	*Datos_Precio_Compra = malloc(sizeof(Datos_CSV));
-	*Datos_Precio_Venta  = malloc(sizeof(Datos_CSV));
-	*Datos_Terminales    = malloc(sizeof(Datos_CSV));
-
-	if (!(*Datos_Algoritmo) || !(*Datos_Vehiculos) || !(*Datos_Baterias) ||
-		!(*Datos_Restricciones) || !(*Datos_Precio_Compra) || !(*Datos_Precio_Venta) ||
-		!(*Datos_Terminales)) {
-		printf("Error reservando memoria\n");
-
-		Liberar_Memoria_Csvs(Datos_Vehiculos, Datos_Algoritmo,
-			Datos_Baterias, Datos_Precio_Compra,
-			Datos_Precio_Venta, Datos_Restricciones,
-			Datos_Terminales);
-		return ERROR;
-	}
-	Inicializar_Numero_Filas_Columnas(Datos_Algoritmo, Datos_Vehiculos, Datos_Baterias,
-		                              Datos_Restricciones, Datos_Precio_Compra,
-		                              Datos_Precio_Venta, Datos_Terminales);
-
-	return EXITO;
+static void inicializar_numero_filas_columnas(datos_csv_t* datos_csv[], int num_csvs) {
+    //Se inicializa el numero de filas y columnas de la 
+    //variable que almacena el csv a 0.
+    for (int i = 0; i < num_csvs; i++) {
+        datos_csv[i]->filas = 0;
+        datos_csv[i]->columnas = 0;
+    }
 }
 
-static void Ajustes_Idioma() {
-	//Para almacenar los caracteres
-	//se esta utilizando la libreria
-	//wchar.
+int inicializar_csvs(datos_csv_t** datos_csv[], int num_csvs) {
+    //Se reserva espacio en memoria para las variables que
+    //almacenan los datos de los CSVs.
+    for (int i = 0; i < num_csvs; i++) {
+        *datos_csv[i] = malloc(sizeof(datos_csv_t));
+        if (!(*datos_csv[i])) {
+            printf("Error reservando memoria\n");
+            return ERROR;
+        }
+    }
 
-    #ifdef _WIN32
-	setlocale(LC_ALL, "Spanish");
-    #elif __linux__
-	setlocale(LC_ALL, "es_ES.UTF-8");
-    #endif
-
+    inicializar_numero_filas_columnas(*datos_csv, num_csvs);
+    return EXITO;
 }
 
-int Inicializar_Algoritmo(Datos_CSV** Datos_Algoritmo, Datos_CSV** Datos_Vehiculos,
-	                      Datos_CSV** Datos_Baterias, Datos_CSV** Datos_Restricciones,
-	                      Datos_CSV** Datos_Precio_Compra, Datos_CSV** Datos_Precio_Venta,
-	                      Datos_CSV** Datos_Terminales) {
-	//Se utiliza este subprograma para
-	//inicializar las variables y ajustes
-	//del programa.
-	Ajustes_Idioma();
+static void ajustes_idioma() {
 
-	if (Inicializar_Csvs(&Datos_Algoritmo, &Datos_Vehiculos, &Datos_Baterias,
-		&Datos_Restricciones, &Datos_Precio_Compra,
-		&Datos_Precio_Venta, &Datos_Terminales) == ERROR) {
-		printf("No se ha podido reservar memoria para los Datos de los Csv \n");
-		return ERROR;
+#ifdef _WIN32
+    setlocale(LC_ALL, "Spanish");
+#elif __linux__
+    setlocale(LC_ALL, "es_ES.UTF-8");
+#endif
+}
 
-	}
-	return EXITO;
+int inicializar_algoritmo(datos_csv_t** datos_algoritmo, datos_csv_t** datos_vehiculos,
+    datos_csv_t** datos_baterias, datos_csv_t** datos_restricciones,
+    datos_csv_t** datos_precio_compra, datos_csv_t** datos_precio_venta,
+    datos_csv_t** datos_terminales) {
+    
+    //Se inicializa los datos del algoritmo. El idioma, 
+    //y la reserva en memoria.
+
+    ajustes_idioma();
+
+    datos_csv_t* datos_csvs[] = { datos_algoritmo, datos_vehiculos, datos_baterias,
+                                  datos_restricciones, datos_precio_compra,
+                                  datos_precio_venta, datos_terminales };
+
+    if (inicializar_csvs(&datos_csvs, 7) == ERROR) {
+        printf("No se ha podido reservar memoria para los Datos de los Csv \n");
+        return ERROR;
+    }
+    return EXITO;
 }

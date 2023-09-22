@@ -12,7 +12,10 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-
+#ifdef _WIN32
+#define strcasecmp _stricmp
+#define wcsdup _wcsdup
+#endif
 
 
 #ifdef __cplusplus

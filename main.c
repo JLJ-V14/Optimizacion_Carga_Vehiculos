@@ -1,57 +1,56 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include "Inicializar_Programa.h"
-#include "Definiciones_Globales.h"
-#include "Liberar_Memoria.h"
-#include "Leer_Entradas.h"
-#include "osqp.h"
-#include "csv.h"
-#include "Tipos_Optimizacion.h"
-#include "Verificar_Entradas.h"
-#include  <locale.h>
 #pragma comment(lib, "OSQPLIB.lib")
-
-
+#include <stdio.h>
+#include "definiciones_globales.h"
+#include "inicializar_programa.h"
+#include "leer_entradas.h"
+#include "liberar_memoria.h"
+#include "tipos_optimizacion.h"
+#include "verificar_entradas.h"
 
 int main() {
-  //Primeramente se definen las variables en donde se almacenan 
-  //los datos leídos de los CSVs
-	Datos_CSV *Datos_Algoritmo;
-	Datos_CSV *Datos_Vehiculos;
-	Datos_CSV *Datos_Baterias;
-	Datos_CSV *Datos_Restricciones;
-	Datos_CSV *Datos_Precio_Compra;
-	Datos_CSV *Datos_Precio_Venta;
-	Datos_CSV *Datos_Terminales;
 
+    // Se crean variables para almacenar los datos de los CSV
+    datos_csv_t* datos_algoritmo = NULL;
+    datos_csv_t* datos_vehiculos = NULL;
+    datos_csv_t* datos_baterias = NULL;
+    datos_csv_t* datos_restricciones = NULL;
+    datos_csv_t* datos_precio_compra = NULL;
+    datos_csv_t* datos_precio_venta = NULL;
+    datos_csv_t* datos_terminales = NULL;
 
-   
+    int estado = EXITO;  // Se asume éxito inicialmente.
 
-	//Se reserva espacio en memoria para las variables
-	//que almacenan los CSVs.
+    // Inicialización de variables y memoria
+    if (inicializar_algoritmo(&datos_algoritmo, &datos_vehiculos, &datos_baterias,
+        &datos_restricciones, &datos_precio_compra,
+        &datos_precio_venta, &datos_terminales) == ERROR) {
+        printf("Fallo en la inicialización del algoritmo\n");
+        estado = SALIDA_ERROR;
+    }
 
-	if (Inicializar_Algoritmo(&Datos_Algoritmo, &Datos_Vehiculos, &Datos_Baterias,
-		&Datos_Restricciones, &Datos_Precio_Compra,
-		&Datos_Precio_Venta, &Datos_Terminales) == ERROR) {
-		printf("Error en la inicializacion del algoritmo \n");
-		return(Salida_Error);
+    // Lectura y validación de datos de entrada
+    if (estado == EXITO && leer_entradas(datos_algoritmo, datos_vehiculos, datos_baterias,
+        datos_restricciones, datos_precio_compra,
+        datos_precio_venta, datos_terminales) == ERROR) {
+        printf("Fallo en la lectura de las entradas\n");
+        estado = SALIDA_ERROR;
+    }
 
-	}
+    // Verificación de las entradas
+    if (estado == EXITO && verificar_entradas(datos_algoritmo, datos_vehiculos, datos_baterias,
+        datos_terminales, datos_restricciones,
+        datos_precio_compra, datos_precio_venta) == ERROR) {
+        printf("Fallo en la validación de las entradas\n");
+        estado = SALIDA_ERROR;
+    }
 
-	//Se Leen los datos de entrada->
-	if (Leer_Entradas(Datos_Algoritmo, Datos_Vehiculos, Datos_Baterias,
-		Datos_Restricciones, Datos_Precio_Compra,
-		Datos_Precio_Venta, Datos_Terminales) == ERROR) {
-		printf("La lectura de las entradas ha sido incorrecta \n");
-		return(Salida_Error);
-	};
+    // En caso de error, liberar la memoria reservada
+    if (estado == SALIDA_ERROR) {
+        liberar_memoria_csvs(datos_vehiculos, datos_algoritmo, datos_baterias,
+            datos_precio_compra, datos_precio_venta,
+            datos_restricciones, datos_terminales);
+    }
 
-	//Se verifica que las entradas sean correctas->
-	if (Verificar_Entradas(Datos_Algoritmo, Datos_Vehiculos,
-		Datos_Baterias, Datos_Terminales,
-		Datos_Restricciones, Datos_Precio_Compra,
-		Datos_Precio_Venta) == ERROR) {
-		return(Salida_Error);
-	}
-
+    return estado;
 }

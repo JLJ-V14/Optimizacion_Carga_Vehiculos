@@ -1,20 +1,21 @@
+/*
+Este es el archivo tipo h del archivo leer_entradas.c
+en este archivo estan los subprogramas que se encargan
+de leer los datos de entrada del csv 
+*/
 
 #ifndef LEER_ENTRADAS_H
 #define LEER_ENTRADAS_H
-
-/* Include files */
-
-#include <stddef.h>
-#include <stdlib.h>
-#include "Tipos_Optimizacion.h"
+#include "tipos_optimizacion.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    int Leer_Entradas(Datos_CSV* Datos_Algoritmo, Datos_CSV* Datos_Vehiculos, Datos_CSV* Datos_Baterias,
-        Datos_CSV* Datos_Restricciones, Datos_CSV* Datos_Precio_Compra, Datos_CSV* Datos_Precio_Venta,
-        Datos_CSV* Datos_Terminales);
+    int leer_entradas(datos_csv_t* datos_algoritmo, datos_csv_t* datos_vehiculos, 
+                      datos_csv_t* datos_baterias,datos_csv_t* datos_restricciones,
+                      datos_csv_t* datos_precio_compra, datos_csv_t* datos_precio_venta,
+                      datos_csv_t* datos_terminales);
 
 #ifdef __cplusplus
 }

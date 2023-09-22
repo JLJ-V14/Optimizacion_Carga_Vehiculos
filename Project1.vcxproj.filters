@@ -21,37 +21,52 @@
     <ClCompile Include="libcsv.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Leer_Entradas.c">
+    <ClCompile Include="leer_entradas.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Liberar_Memoria.c">
+    <ClCompile Include="liberar_memoria.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Verificar_Entradas.c">
+    <ClCompile Include="verificar_entradas.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Verificar_Datos_Algoritmo.c">
+    <ClCompile Include="verificar_datos_algoritmo.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Verificar_Restricciones.c">
+    <ClCompile Include="verificar_restricciones.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Verificar_Precios.c">
+    <ClCompile Include="verificar_precios.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Verificar_Vehiculos.c">
+    <ClCompile Include="verificar_vehiculos.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Verificar_Baterias.c">
+    <ClCompile Include="verificar_baterias.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Verificar_Datos_Terminales.c">
+    <ClCompile Include="verificar_datos_terminales.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Funciones_Auxiliares.c">
+    <ClCompile Include="inicializar_programa.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Inicializar_Programa.c">
+    <ClCompile Include="registrar_errores.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="operaciones_fecha.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="operaciones_csv.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="operaciones_string.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="conversion_numeros.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="validaciones.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,46 +77,61 @@
     <ClInclude Include="csv.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Tipos_Optimizacion.h">
+    <ClInclude Include="tipos_optimizacion.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Leer_Entradas.h">
+    <ClInclude Include="leer_entradas.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Definiciones_Globales.h">
+    <ClInclude Include="definiciones_globales.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Liberar_Memoria.h">
+    <ClInclude Include="liberar_memoria.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Verificar_Entradas.h">
+    <ClInclude Include="verificar_entradas.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Verificar_Datos_Algoritmo.h">
+    <ClInclude Include="verificar_datos_algoritmo.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Verificar_Restricciones.h">
+    <ClInclude Include="verificar_restricciones.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Verificar_Precios.h">
+    <ClInclude Include="verificar_precios.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Verificar_Vehiculos.h">
+    <ClInclude Include="verificar_vehiculos.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Verificar_Baterias.h.h">
+    <ClInclude Include="verificar_Baterias.h.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Verificar_Datos_Terminales.h">
+    <ClInclude Include="verificar_datos_terminales.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Funciones_Auxiliares.h">
+    <ClInclude Include="inicializar_programa.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Inicializar_Programa.h">
+    <ClInclude Include="portabilidad.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Portabilidad.h">
+    <ClInclude Include="registrar_errores.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="operaciones_fecha.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="operaciones_csv.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="operaciones_string.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="conversion_numeros.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="validaciones.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

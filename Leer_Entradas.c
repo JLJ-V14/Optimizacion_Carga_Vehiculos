@@ -1,143 +1,144 @@
-#define _CRT_SECURE_NO_WARNINGS
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+
+#include <errno.h>
 #include <wchar.h>
-#include <wctype.h>
-#include "Definiciones_Globales.h"
-#include "Liberar_Memoria.h"
-#include "Portabilidad.h"
-#include "Tipos_Optimizacion.h"
-#include "Verificar_Entradas.h"
+#include <stdio.h>
+#include "definiciones_globales.h"
+#include "liberar_memoria.h"
+#include "tipos_optimizacion.h"
+#define  MAX_LONGITUD_LINEA 1024
+#define  MAX_NUM_FILAS_INICIAL 10
+#define  DELIMITADOR L","
 
-#ifdef _WIN32
-#define strcasecmp _stricmp
-#define wcsdup _wcsdup
-#endif
 
-static int Leer_CSV(const char* Nombre_Archivo, wchar_t Delimitador, Datos_CSV* Datos_Excel) {
-    FILE* Archivo = fopen(Nombre_Archivo, "r");
-    if (!Archivo) {
-        perror("No se pudo abrir el archivo \n");
+static int leer_csv(const char* nombre_archivo, wchar_t delimitador, datos_csv_t* datos_csv) {
+    //Este subprograma se utiliza para leer los contenidos de los
+    //CSV recibe de parametros de entrada el nombre del archivo 
+    //el delimitador de los elementos en este caso es la "," 
+    //y la variable en la cual almacenar los datos.
+
+    FILE* archivo = fopen(nombre_archivo, "r");
+    if (!archivo) {
+        fprintf(stderr, "fopen: %s: %s\n", nombre_archivo, strerror(errno));
         return ERROR;
     }
 
-    int Numero_Lineas = 0;
-    int Numero_Columnas = 0;
-    Datos_Excel->Filas = 0;
-    Datos_Excel->Columnas = 0;
+    int numero_lineas = 0;
+    int numero_columnas = 0;
+    datos_csv->filas = 0;
+    datos_csv->columnas = 0;
 
-    wchar_t Linea[1024];
+    wchar_t linea[MAX_LONGITUD_LINEA];
     int i = 0;
 
-    int capacidad = 10;
-    Datos_Excel->Datos = malloc(capacidad * sizeof(wchar_t**));
-    if (Datos_Excel->Datos == NULL) {
-        perror("Error allocating memory");
-        fclose(Archivo);
+    int capacidad = MAX_NUM_FILAS_INICIAL;
+    datos_csv->datos = malloc(capacidad * sizeof(wchar_t**));
+    if (datos_csv->datos == NULL) {
+        perror("Error reservando memoria");
+        fclose(archivo);
         return ERROR;
     }
 
-    while (fgetws(Linea, 1024, Archivo)) {
-        if (Linea[0] == L'\n') continue;
+    while (fgetws(linea, MAX_LONGITUD_LINEA, archivo)) {
+        if (linea[0] == L'\n') continue;
 
-        if (Numero_Lineas == capacidad) {
+        if (numero_lineas == capacidad) {
             capacidad *= 2;
-            wchar_t*** temp = realloc(Datos_Excel->Datos, capacidad * sizeof(wchar_t**));
+            wchar_t*** temp = realloc(datos_csv->datos, capacidad * sizeof(wchar_t**));
             if (temp == NULL) {
-                perror("Error reallocating memory");
-                Liberar_Memoria_Csv(Datos_Excel);
-                fclose(Archivo);
+                perror("Error reservando memoria\n");
+                liberar_memoria_csv_individual(datos_csv);
+                fclose(archivo);
                 return ERROR;
             }
-            Datos_Excel->Datos = temp;
+            datos_csv->datos = temp;
         }
 
-        wchar_t DelimitadorStr[2] = { Delimitador, L'\0' };
-        wchar_t* Token;
+        wchar_t delimitador_str[2] = { delimitador, L'\0' };
+        wchar_t* token;
         wchar_t* next_token;
-        Token = wcstok(Linea, DelimitadorStr, &next_token);
+        token = wcstok(linea, delimitador_str, &next_token);
         int current_columns = 0;
-        while (Token != NULL) {
+        while (token != NULL) {
             current_columns++;
-            Token = wcstok(NULL, DelimitadorStr, &next_token);
+            token = wcstok(NULL, delimitador_str, &next_token);
         }
 
-        if (current_columns > Numero_Columnas) {
-            Numero_Columnas = current_columns;
+        if (current_columns > numero_columnas) {
+            numero_columnas = current_columns;
         }
-        Numero_Lineas++;
+        numero_lineas++;
 
-        Datos_Excel->Datos[i] = malloc(Numero_Columnas * sizeof(wchar_t*));
-        if (Datos_Excel->Datos[i] == NULL) {
-            perror("Error allocating memory");
-            Liberar_Memoria_Csv(Datos_Excel);
-            fclose(Archivo);
+        datos_csv->datos[i] = malloc(numero_columnas * sizeof(wchar_t*));
+        if (datos_csv->datos[i] == NULL) {
+            perror("Error reservando memoria");
+            liberar_memoria_csv_individual(datos_csv);
+            fclose(archivo);
             return ERROR;
         }
 
-        Token = wcstok(Linea, DelimitadorStr, &next_token);
-        for (int j = 0; j < Numero_Columnas; j++) {
-            if (Token != NULL) {
-                Datos_Excel->Datos[i][j] = wcsdup(Token);
-                if (Datos_Excel->Datos[i][j] == NULL) {
-                    perror("Error allocating memory");
-                    Liberar_Memoria_Csv(Datos_Excel);
-                    fclose(Archivo);
+        token = wcstok(linea, delimitador_str, &next_token);
+        for (int j = 0; j < numero_columnas; j++) {
+            if (token != NULL) {
+                datos_csv->datos[i][j] = wcsdup(token);
+                if (datos_csv->datos[i][j] == NULL) {
+                    perror("Error reservando memoria\n");
+                    liberar_memoria_csv_individual(datos_csv);
+                    fclose(archivo);
                     return ERROR;
                 }
-                Token = wcstok(NULL, DelimitadorStr, &next_token);
+                token = wcstok(NULL, delimitador_str, &next_token);
             }
             else {
-                Datos_Excel->Datos[i][j] = NULL;
+                datos_csv->datos[i][j] = NULL;
             }
         }
         i++;
     }
 
-    Datos_Excel->Filas = Numero_Lineas;
-    Datos_Excel->Columnas = Numero_Columnas;
+    datos_csv->filas = numero_lineas;
+    datos_csv->columnas = numero_columnas;
 
-    fclose(Archivo);
+    fclose(archivo);
     return EXITO;
 }
 
 
 
 
-int Leer_Entradas(Datos_CSV* Datos_Algoritmo, Datos_CSV* Datos_Vehiculos, Datos_CSV* Datos_Baterias,
-                  Datos_CSV* Datos_Restricciones, Datos_CSV *Datos_Precio_Compra, Datos_CSV *Datos_Precio_Venta,
-                  Datos_CSV* Datos_Terminales) {
+int leer_entradas(datos_csv_t* datos_algoritmo, datos_csv_t* datos_vehiculos, datos_csv_t* datos_baterias,
+                  datos_csv_t* datos_restricciones, datos_csv_t *datos_precio_compra, datos_csv_t *datos_precio_venta,
+                  datos_csv_t* datos_terminales) {
 
     //Este subprograma se utiliza para leer las diferentes
     //datos de entrada contenidos en los archivos csvs.
 
-    if (Leer_CSV("Informacion_Terminales.csv", ",", Datos_Terminales) == ERROR) {
+    if (leer_csv(INFORMACION_TERMINALES, DELIMITADOR, datos_terminales) == ERROR) {
         goto error;
     }
     
-    if (Leer_CSV("Informacion_Vehiculos.csv", ",", Datos_Vehiculos) == ERROR) {
+    if (leer_csv(INFORMACION_VEHICULOS, DELIMITADOR, datos_vehiculos) == ERROR) {
         goto error;
     }
     
-    if (Leer_CSV("Informacion_Baterias.csv", ",", Datos_Baterias) == ERROR) {
+    if (leer_csv(INFORMACION_BATERIAS, DELIMITADOR, datos_baterias) == ERROR) {
         goto error;
     }
 
-    if (Leer_CSV("Informacion_Algoritmo.csv", ",", Datos_Algoritmo) == ERROR) {
+    if (leer_csv(INFORMACION_ALGORITMO, DELIMITADOR, datos_algoritmo) == ERROR) {
         goto error;
     }
 
-    if (Leer_CSV("Restricciones_Sistema.csv", ",", Datos_Restricciones) == ERROR) {
+    if (leer_csv(INFORMACION_RESTRICCIONES_SISTEMA, DELIMITADOR, datos_restricciones) == ERROR) {
         goto error;
     }
 
-    if (Leer_CSV("Precio_Compra_Kilovatio.csv", ",", Datos_Precio_Compra) == ERROR) {
+    if (leer_csv(INFORMACION_PRECIO_COMPRA, DELIMITADOR, datos_precio_compra) == ERROR) {
         goto error;
     }
     
-    if (Leer_CSV("Precio_Venta_Kilovatio.csv", ",", Datos_Precio_Venta) == ERROR) {
+    if (leer_csv(INFORMACION_PRECIO_VENTA, DELIMITADOR, datos_precio_venta) == ERROR) {
         goto error;
     
     }
@@ -148,10 +149,10 @@ int Leer_Entradas(Datos_CSV* Datos_Algoritmo, Datos_CSV* Datos_Vehiculos, Datos_
 
     error:
 
-    Liberar_Memoria_Csvs(Datos_Vehiculos, Datos_Algoritmo,
-                         Datos_Baterias,Datos_Precio_Compra, 
-                         Datos_Precio_Venta,Datos_Restricciones, 
-                         Datos_Terminales);
+    liberar_memoria_csvs(datos_vehiculos, datos_algoritmo,
+                         datos_baterias,datos_precio_compra, 
+                         datos_precio_venta,datos_restricciones, 
+                         datos_terminales);
     return ERROR;
 
 }

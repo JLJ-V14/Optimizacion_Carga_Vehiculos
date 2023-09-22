@@ -1,38 +1,62 @@
 
-#pragma warning  (disable: 6001)  //Deshabilitar advertencia 6001
+
 #include <stdlib.h>
-#include "Tipos_Optimizacion.h"
+#include "tipos_optimizacion.h"
 
-void Liberar_Memoria_Csv (Datos_CSV* Datos_Excel) {
-    //Este subprograma se utiliza para liberar la memoria
-    //reservada a almacenar la informacion del CSV.
+    /*
+    Este subprograma se utiliza para liberar la memoria
+    reservada a almacenar la informacion del CSV.
+    */
+void liberar_memoria_csv_individual (datos_csv_t* datos_csv) {
 
-    int Numero_Filas = Datos_Excel->Filas;
-    int Numero_Columnas = Datos_Excel->Columnas;
-
-    for (int i = 0; i < Numero_Filas; i++) {
-        for (int j = 0; j < Numero_Columnas; j++) {
-            free(Datos_Excel->Datos[i][j]);
-        }
-        free(Datos_Excel->Datos[i]);
+    if (datos_csv == NULL) {
+        return; //Si el dato de entrada que es un puntero es NULL se sale de la funcion.
     }
-    free(Datos_Excel->Datos);
-    Datos_Excel->Filas = 0;
-    Datos_Excel->Columnas = 0;
+    int numero_filas = datos_csv->filas;
+    int numero_columnas = datos_csv->columnas;
+
+    for (int i = 0; i < numero_filas; i++) {
+        for (int j = 0; j < numero_columnas; j++) {
+            free(datos_csv->datos[i][j]);
+            datos_csv->datos[i][j] = NULL;
+        }
+        free(datos_csv->datos[i]);
+    }
+    free(datos_csv->datos);
+    datos_csv->filas = 0;
+    datos_csv->columnas = 0;
 }
-void Liberar_Memoria_Csvs(Datos_CSV* Datos_Vehiculos, Datos_CSV* Datos_Algoritmo,
-    Datos_CSV* Datos_Baterias, Datos_CSV* Datos_Precio_Compra,
-    Datos_CSV* Datos_Precio_Venta, Datos_CSV* Restricciones_Sistema,
-    Datos_CSV* Datos_Terminales) {
 
-    //Este subprograma se utiliza para reservar espacio en memoria para 
-    //los datos que se leen de los CSVs
+/*
+Este subprograma se utiliza para liberar espacio en memoria para
+los datos que se leen de los CSVs
+*/
 
-    Liberar_Memoria_Csv(Datos_Vehiculos);
-    Liberar_Memoria_Csv(Datos_Algoritmo);
-    Liberar_Memoria_Csv(Datos_Baterias);
-    Liberar_Memoria_Csv(Datos_Precio_Compra);
-    Liberar_Memoria_Csv(Datos_Precio_Venta);
-    Liberar_Memoria_Csv(Restricciones_Sistema);
+void liberar_memoria_csvs(datos_csv_t* datos_vehiculos, datos_csv_t* datos_algoritmo,
+    datos_csv_t* datos_baterias, datos_csv_t* datos_precio_compra,
+    datos_csv_t* datos_precio_venta, datos_csv_t* datos_restricciones_sistema,
+    datos_csv_t* datos_terminales) {
 
+  
+    if (datos_vehiculos != NULL) {
+        liberar_memoria_csv_individual(datos_vehiculos);
+    }
+    if (datos_algoritmo != NULL) {
+        liberar_memoria_csv_individual(datos_algoritmo);
+    }
+    if (datos_baterias != NULL) {
+        liberar_memoria_csv_individual(datos_baterias);
+    }
+    if (datos_precio_compra != NULL) {
+        liberar_memoria_csv_individual(datos_precio_compra);
+    }
+    if (datos_precio_venta != NULL) {
+        liberar_memoria_csv_individual(datos_precio_venta);
+    }
+    if (datos_restricciones_sistema != NULL) {
+        liberar_memoria_csv_individual(datos_restricciones_sistema);
+    }
+    if (datos_terminales != NULL) {
+        liberar_memoria_csv_individual(datos_terminales);
+    }
 }
