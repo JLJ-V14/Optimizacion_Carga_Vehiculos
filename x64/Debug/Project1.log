@@ -1,2 +1,9 @@
-﻿  liberar_memoria.c
-c1 : fatal  error C1356: unable to find mspdbcore.dll
+﻿  comprobar_lectura_datos.c
+F:\Optimizacion\Project1\Project1\comprobar_lectura_datos.c(114,47): warning C4133: 'function': incompatible types - from 'datos_csv_algoritmo_t *' to 'datos_csv_t *'
+F:\Optimizacion\Project1\Project1\comprobar_lectura_datos.c(115,48): warning C4133: 'function': incompatible types - from 'datos_csv_vehiculos_t *' to 'datos_csv_t *'
+F:\Optimizacion\Project1\Project1\comprobar_lectura_datos.c(116,47): warning C4133: 'function': incompatible types - from 'datos_csv_baterias_t *' to 'datos_csv_t *'
+F:\Optimizacion\Project1\Project1\comprobar_lectura_datos.c(117,52): warning C4133: 'function': incompatible types - from 'datos_csv_restricciones_t *' to 'datos_csv_t *'
+F:\Optimizacion\Project1\Project1\comprobar_lectura_datos.c(118,49): warning C4133: 'function': incompatible types - from 'datos_csv_terminales_t *' to 'datos_csv_t *'
+F:\Optimizacion\Project1\Project1\comprobar_lectura_datos.c(119,52): warning C4133: 'function': incompatible types - from 'datos_csv_precio_compra_t *' to 'datos_csv_t *'
+F:\Optimizacion\Project1\Project1\comprobar_lectura_datos.c(120,51): warning C4133: 'function': incompatible types - from 'datos_csv_precio_venta_t *' to 'datos_csv_t *'
+  Project1.vcxproj -> F:\Optimizacion\Project1\x64\Debug\Project1.exe

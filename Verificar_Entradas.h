@@ -1,8 +1,8 @@
-
+/*
 #ifndef VERIFICAR_ENTRADAS_H
 #define VERIFICAR_ENTRADAS_H
 
-/* Include files */
+/* Include files 
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -21,3 +21,4 @@ extern "C" {
 #endif
 
 #endif
+*/

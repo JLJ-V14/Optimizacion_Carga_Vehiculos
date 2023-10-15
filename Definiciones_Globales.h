@@ -11,8 +11,8 @@
 //Una constante para el subprograma que compara
 //las fechas
 
-#define No_Incluir_Fecha_Igual 0 
-#define Incluir_Fecha_Igual    1
+#define NO_INCLUIR_FECHA_IGUAL 0 
+#define INCLUIR_FECHA_IGUAL    1
 
 //Constantes relacionadas con el subprograma que
 //obtiene si los datos del CSV son numeros 
@@ -33,8 +33,8 @@
 //Defino si se incluye el minuto en una fecha
 // o no
 
-#define No_Incluir_Minuto        0
-#define Si_Incluir_Minuto        1
+#define NO_INCLUIR_MINUTO        0
+#define SI_INCLUIR_MINUTO        1
 //Numero de segundos que hay en una hora->
 
 #define Segundos_Hora           3600
@@ -42,36 +42,27 @@
 //y los meses a partir de 0. Luego hay que restar
 //esas cantidades.
 
-#define Offset_Anyo 1900
-#define Offset_Mes  1
+#define DESPLAZAMIENTO_ANYO 1900
+#define DESPLAZAMIENTO_MES  1
 
 //Constantes para los valores que retornan las funciones
 //tipo int.
-#define EXITO  0
-#define ERROR -1
+
+typedef enum {
+    EXITO,
+    ERROR
+} Resultado;
+
 //Defino las filas y columnas en donde se encuentran los 
 //diferentes datos de entrada en los diferentes CSVS.
 // 
 //Datos_Algoritmo:
 #define Num_Columnas_Csv_Info_Algoritmo 11
 #define Num_Filas_Csv_Info_Algoritmo    2
-//Defino la fila donde se encuentran los datos.
-#define Fila_Datos_Algoritmo 1   
 
 
-//Defino las columnas en donde se encuentran 
-//los diferentes tipos de datos del algoritmo
-#define Columna_Anyo_Inicio_Algoritmo   0
-#define Columna_Mes_Inicio_Algoritmo    1
-#define Columna_Dia_Inicio_Algoritmo    2
-#define Columna_Hora_Inicio_Algoritmo   3
-#define Columna_Minuto_Inicio_Algoritmo 4
-#define Columna_Anyo_Final_Algoritmo    5
-#define Columna_Mes_Final_Algoritmo     6
-#define Columna_Dia_Final_Algoritmo     7
-#define Columna_Hora_Final_Algoritmo    8
-#define Columna_Minuto_Final_Algoritmo  9
-#define Columna_Resolucion_Tiempo_Simulacion 10 
+
+
 
 //Defino donde se encuentra los distintos tipos
 //de informacion en el CSV de los precios
@@ -92,43 +83,11 @@
 #define  Columna_Numero_Terminal 0
 #define  Columna_Fase            1
 
-//Defino la fila donde se encuentran los
-//encabezados en los CSVs
-#define Fila_Encabezados 0
-
-//Defino las columnas donde se encuentra
-//la informacion en el CSV de los vehiculos
-#define Columna_Csv_Vehiculos_Terminal         0
-#define Columna_Csv_Vehiculos_Modo_Carga       1
-#define Columna_Csv_Vehiculos_Capacidad        2
-#define Columna_Csv_Vehiculos_Bateria_Inicial  3
-#define Columna_Csv_Vehiculos_Bateria_Final    4
-#define Columna_Csv_Vehiculos_Maxima_Potencia  5
-
-
-//Defino la informacion donde se encuentra la
-//informacion en el CSV de los vehiculos
-#define Columna_Csv_Baterias_Terminal               0 
-#define Columna_Csv_Baterias_Objetivo_Carga         1 
-#define Columna_Csv_Baterias_Capacidad              2
-#define Columna_Csv_Baterias_Bateria_Inicial        3
-#define Columna_Csv_Baterias_Bateria_Final          4
-#define Columna_Csv_Baterias_Maxima_Potencia        5
 
 
 
-//Hay columnas que son iguales en el CSV de las
-//baterias y en el de los vehiculos 
-#define Columna_Csv_Carga_Anyo_Inicial    6
-#define Columna_Csv_Carga_Mes_Inicial     7
-#define Columna_Csv_Carga_Dia_Inicial     8
-#define Columna_Csv_Carga_Hora_Inicial    9
-#define Columna_Csv_Carga_Minuto_Inicial  10 
-#define Columna_Csv_Carga_Anyo_Final      11
-#define Columna_Csv_Carga_Mes_Final       12
-#define Columna_Csv_Carga_Dia_Final       13
-#define Columna_Csv_Carga_Hora_Final      14
-#define Columna_Csv_Carga_Minuto_Final    15
+
+
 
 //Se define el nombre de los archivos.csv que
 //contienen la informacion de entrada
@@ -140,4 +99,9 @@
 #define INFORMACION_PRECIO_COMPRA         "Precio_Compra_Kilovatio.csv"
 #define INFORMACION_PRECIO_VENTA          "Precio_Venta_Kilovatio.csv"
 #define INFORMACION_RESTRICCIONES_SISTEMA "Restricciones_Sistema.csv"
+#define REGISTRO_ERRORES                  "registro_errores.log"
+
+
+
+
 #endif

@@ -4,12 +4,25 @@
 #include <errno.h>
 #include <wchar.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "definiciones_globales.h"
+#include "funciones_plataforma_dependiente.h"
+#include "leer_entradas.h"
 #include "liberar_memoria.h"
+#include "registrar_errores.h"
 #include "tipos_optimizacion.h"
+
+
+
 #define  MAX_LONGITUD_LINEA 1024
 #define  MAX_NUM_FILAS_INICIAL 10
 #define  DELIMITADOR L","
+
+
+
+//Se define el numero de csvs que se tiene.
+#define NUM_CSVS (sizeof(csvs) / sizeof(csvs[0]))
 
 
 static int leer_csv(const char* nombre_archivo, wchar_t delimitador, datos_csv_t* datos_csv) {
@@ -18,9 +31,14 @@ static int leer_csv(const char* nombre_archivo, wchar_t delimitador, datos_csv_t
     //el delimitador de los elementos en este caso es la "," 
     //y la variable en la cual almacenar los datos.
 
-    FILE* archivo = fopen(nombre_archivo, "r");
+    //FILE* archivo = fopen(nombre_archivo, "r");
+    FILE* archivo;
+    int resultado = abrir_archivo(nombre_archivo, "r", &archivo);
     if (!archivo) {
-        fprintf(stderr, "fopen: %s: %s\n", nombre_archivo, strerror(errno));
+        char mensaje_error[256]; //Se define un buffer lo suficientemente largo para almacenar el mensaje 
+        snprintf(mensaje_error, sizeof(mensaje_error), "No se ha podido abrir el archivo %s", nombre_archivo);
+        printf("No se ha podido abrir el archivo %s\n", nombre_archivo);
+        registrar_error(mensaje_error,REGISTRO_ERRORES);
         return ERROR;
     }
 
@@ -58,11 +76,11 @@ static int leer_csv(const char* nombre_archivo, wchar_t delimitador, datos_csv_t
         wchar_t delimitador_str[2] = { delimitador, L'\0' };
         wchar_t* token;
         wchar_t* next_token;
-        token = wcstok(linea, delimitador_str, &next_token);
+        token = wcstok_seguro(linea, delimitador_str, &next_token);
         int current_columns = 0;
         while (token != NULL) {
             current_columns++;
-            token = wcstok(NULL, delimitador_str, &next_token);
+            token = wcstok_seguro(NULL, delimitador_str, &next_token);
         }
 
         if (current_columns > numero_columnas) {
@@ -78,17 +96,17 @@ static int leer_csv(const char* nombre_archivo, wchar_t delimitador, datos_csv_t
             return ERROR;
         }
 
-        token = wcstok(linea, delimitador_str, &next_token);
+        token = wcstok_seguro(linea, delimitador_str, &next_token);
         for (int j = 0; j < numero_columnas; j++) {
             if (token != NULL) {
-                datos_csv->datos[i][j] = wcsdup(token);
+                datos_csv->datos[i][j] = wcsdup_plataforma(token);
                 if (datos_csv->datos[i][j] == NULL) {
                     perror("Error reservando memoria\n");
                     liberar_memoria_csv_individual(datos_csv);
                     fclose(archivo);
                     return ERROR;
                 }
-                token = wcstok(NULL, delimitador_str, &next_token);
+                token = wcstok_seguro(NULL, delimitador_str, &next_token);
             }
             else {
                 datos_csv->datos[i][j] = NULL;
@@ -107,52 +125,32 @@ static int leer_csv(const char* nombre_archivo, wchar_t delimitador, datos_csv_t
 
 
 
-int leer_entradas(datos_csv_t* datos_algoritmo, datos_csv_t* datos_vehiculos, datos_csv_t* datos_baterias,
-                  datos_csv_t* datos_restricciones, datos_csv_t *datos_precio_compra, datos_csv_t *datos_precio_venta,
-                  datos_csv_t* datos_terminales) {
+int leer_entradas(informacion_entrada_t *informacion_sistema) {
 
     //Este subprograma se utiliza para leer las diferentes
     //datos de entrada contenidos en los archivos csvs.
 
-    if (leer_csv(INFORMACION_TERMINALES, DELIMITADOR, datos_terminales) == ERROR) {
-        goto error;
-    }
+    entrada_csv csvs[] = {
+    {INFORMACION_TERMINALES, &(informacion_sistema->datos_terminales.informacion_terminales)},
+    {INFORMACION_VEHICULOS, &(informacion_sistema->datos_vehiculos.informacion_vehiculos)},
+    {INFORMACION_BATERIAS, &(informacion_sistema->datos_baterias.informacion_baterias)},
+    {INFORMACION_ALGORITMO, &(informacion_sistema->datos_algoritmo.informacion_algoritmo)},
+    {INFORMACION_RESTRICCIONES_SISTEMA, &(informacion_sistema->datos_restricciones.informacion_restricciones)},
+    {INFORMACION_PRECIO_COMPRA, &(informacion_sistema->datos_precio_compra.informacion_precio_compra)},
+    {INFORMACION_PRECIO_VENTA, &(informacion_sistema->datos_precio_venta.informacion_precio_venta)}
     
-    if (leer_csv(INFORMACION_VEHICULOS, DELIMITADOR, datos_vehiculos) == ERROR) {
-        goto error;
-    }
-    
-    if (leer_csv(INFORMACION_BATERIAS, DELIMITADOR, datos_baterias) == ERROR) {
-        goto error;
-    }
+    };
 
-    if (leer_csv(INFORMACION_ALGORITMO, DELIMITADOR, datos_algoritmo) == ERROR) {
-        goto error;
+    for (int i = 0; i < NUM_CSVS; i++) {
+        if (leer_csv(csvs[i].nombre_archivo, DELIMITADOR, csvs[i].datos) == ERROR) {
+            
+            return ERROR;
+        }
     }
-
-    if (leer_csv(INFORMACION_RESTRICCIONES_SISTEMA, DELIMITADOR, datos_restricciones) == ERROR) {
-        goto error;
-    }
-
-    if (leer_csv(INFORMACION_PRECIO_COMPRA, DELIMITADOR, datos_precio_compra) == ERROR) {
-        goto error;
-    }
-    
-    if (leer_csv(INFORMACION_PRECIO_VENTA, DELIMITADOR, datos_precio_venta) == ERROR) {
-        goto error;
-    
-    }
-
 
 
     return EXITO;
 
-    error:
-
-    liberar_memoria_csvs(datos_vehiculos, datos_algoritmo,
-                         datos_baterias,datos_precio_compra, 
-                         datos_precio_venta,datos_restricciones, 
-                         datos_terminales);
-    return ERROR;
+    
 
 }

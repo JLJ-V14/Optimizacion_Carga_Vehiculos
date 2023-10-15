@@ -48,7 +48,7 @@
     <ClCompile Include="verificar_datos_terminales.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="inicializar_programa.c">
+    <ClCompile Include="inicializar_csv.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="registrar_errores.c">
@@ -67,6 +67,21 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="validaciones.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="inicializar_datos_procesados.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="inicializacion_algoritmo.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="inicializar_posiciones.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="funciones_plataforma_dependiente.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="comprobar_lectura_datos.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,16 +119,13 @@
     <ClInclude Include="verificar_vehiculos.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="verificar_Baterias.h.h">
+    <ClInclude Include="verificar_baterias.h.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="verificar_datos_terminales.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="inicializar_programa.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="portabilidad.h">
+    <ClInclude Include="inicializar_csv.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="registrar_errores.h">
@@ -132,6 +144,21 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="validaciones.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="inicializar_datos_procesados.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="inicializacion_algoritmo.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="inicializar_posiciones.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="funciones_plataforma_dependiente.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="comprobar_lectura_datos.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

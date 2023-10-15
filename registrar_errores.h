@@ -10,7 +10,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	void Registrar_Error(const char* Msg, const char* filename);
+	void registrar_error(const char* mensaje, const char* nombre_achivo);
 
 
 #ifdef __cplusplus

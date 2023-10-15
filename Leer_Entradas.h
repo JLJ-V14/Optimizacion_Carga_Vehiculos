@@ -8,14 +8,13 @@ de leer los datos de entrada del csv
 #define LEER_ENTRADAS_H
 #include "tipos_optimizacion.h"
 
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    int leer_entradas(datos_csv_t* datos_algoritmo, datos_csv_t* datos_vehiculos, 
-                      datos_csv_t* datos_baterias,datos_csv_t* datos_restricciones,
-                      datos_csv_t* datos_precio_compra, datos_csv_t* datos_precio_venta,
-                      datos_csv_t* datos_terminales);
+	int leer_entradas(informacion_entrada_t* informacion_sistema);
 
 #ifdef __cplusplus
 }

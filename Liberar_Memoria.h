@@ -13,14 +13,10 @@
 extern "C" {
 #endif
 
-    // Libera memoria para un solo conjunto de datos CSV.
-    void liberar_memoria_csv_individual(datos_csv_t* datos_csv);
-
+   
     // Libera memoria para múltiples conjuntos de datos CSV.
-    void liberar_memoria_csvs(datos_csv_t* datos_vehiculos, datos_csv_t* datos_algoritmo,
-        datos_csv_t* datos_baterias, datos_csv_t* datos_precio_compra,
-        datos_csv_t* datos_precio_venta, datos_csv_t* restricciones_sistema,
-        datos_csv_t* datos_restricciones);
+    void liberar_memoria_csv_individual(datos_csv_t** datos_csv); 
+    void liberar_memoria_csvs(informacion_entrada_t* informacion_sistema);
 
 #ifdef __cplusplus
 }
