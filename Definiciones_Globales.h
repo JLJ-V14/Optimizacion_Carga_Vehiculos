@@ -17,8 +17,8 @@
 //Constantes relacionadas con el subprograma que
 //obtiene si los datos del CSV son numeros 
 
-#define Decimal_Incluido      0
-#define Decimal_No_Incluido   1
+#define DECIMAL_INCLUIDO      0
+#define DECIMAL_NO_INCLUIDO   1
 
 
 
@@ -28,8 +28,8 @@
 //Una constante para rellenar informacion
 //en un campo que no proceda
 //Defino ademas 
-#define Primera_Fila             1
-#define No_Procede              -1
+#define PRIMERA_FILA             1
+#define NO_PROCEDE              -1
 //Defino si se incluye el minuto en una fecha
 // o no
 
@@ -37,7 +37,7 @@
 #define SI_INCLUIR_MINUTO        1
 //Numero de segundos que hay en una hora->
 
-#define Segundos_Hora           3600
+#define SEGUNDOS_HORA           3600
 //En esta libreria los años van a partir de 1900
 //y los meses a partir de 0. Luego hay que restar
 //esas cantidades.
@@ -57,8 +57,8 @@ typedef enum {
 //diferentes datos de entrada en los diferentes CSVS.
 // 
 //Datos_Algoritmo:
-#define Num_Columnas_Csv_Info_Algoritmo 11
-#define Num_Filas_Csv_Info_Algoritmo    2
+#define NUM_COLUMNAS_CSV_INFO_ALGORITMO 11
+#define NUM_FILAS_CSV_INFO_ALGORITMO    2
 
 
 
@@ -67,21 +67,21 @@ typedef enum {
 //Defino donde se encuentra los distintos tipos
 //de informacion en el CSV de los precios
 
-#define Columna_Anyo_Precio    0
-#define Columna_Mes_Precio     1
-#define Columna_Dia_Precio     2
-#define Columna_Hora_Precio    3
-#define Columna_Precio         4
+#define COLUMNA_ANYO_PRECIO    0
+#define COLUMNA_MES_PRECIO     1
+#define COLUMNA_DIA_PRECIO     2
+#define COLUMNA_HORA_PRECIO    3
+#define COLUMNA_PRECIO         4
 
 //Defino donde se encuentra la informacion en el CSV de las restricciones->
-#define Primera_Columna_Datos_Restricciones 1
-#define Fila_Informacion_Csv_Restricciones  1
+#define PRIMERA_COLUMNA_DATOS_RESTRICCIONES 1
+#define FILA_INFORMACION_CSV_RESTRICCIONES  1
 
 //Se define informacion relacionada con los
 //terminales de la placa de redistribucion.
-#define Numero_Terminales 12
-#define  Columna_Numero_Terminal 0
-#define  Columna_Fase            1
+#define  NUMERO_TERMINALES 12
+#define  COLUMNA_NUMERO_TERMINAL 0
+#define  COLUMNA_FASE            1
 
 
 

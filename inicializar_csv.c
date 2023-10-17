@@ -67,8 +67,8 @@ int inicializar_informacion_entrada(informacion_entrada_t* informacion_sistema) 
     datos_csv_t* datos_vehiculos     = &(informacion_sistema->datos_vehiculos.informacion_vehiculos);
     datos_csv_t* datos_baterias      = &(informacion_sistema->datos_baterias.informacion_baterias);
     datos_csv_t* datos_restricciones = &(informacion_sistema->datos_restricciones.informacion_restricciones);
-    datos_csv_t* datos_precio_compra = &(informacion_sistema->datos_precio_compra.informacion_precio_compra);
-    datos_csv_t* datos_precio_venta  = &(informacion_sistema->datos_precio_venta.informacion_precio_venta);
+    datos_csv_t* datos_precio_compra = &(informacion_sistema->datos_precio_compra.informacion_precio);
+    datos_csv_t* datos_precio_venta  = &(informacion_sistema->datos_precio_venta.informacion_precio);
     datos_csv_t* datos_terminales    = &(informacion_sistema->datos_terminales.informacion_terminales);
 
   

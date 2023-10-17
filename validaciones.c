@@ -1,66 +1,93 @@
-//
-//bool Comprobar_Porcentaje_Bateria(const double Porcentaje_Bateria) {
-//	//Este subprograma se utiliza para
-//	//comprobar que el porcentaje de 
-//	//bateria se encuentra entre 0 y 1
-//
-//	return ((Porcentaje_Bateria >= 0) && (Porcentaje_Bateria <= 1));
-//}
-//
-//int Verificar_Numero_Terminal(const wchar_t* Numero_Terminal, const int Numero_Fila) {
-//	//Este subprograma se utiliza
-//	//para verificar que el dato 
-//	//de terminal es correcto.
-//
-//	//Se comprueba que el numero 
-//	//del terminal esté dentro del 
-//	//rango y que sea un dato numerico
-//	//no decimal.
-//
-//	if (!Es_Un_Numero(Numero_Terminal, Decimal_No_Incluido)) {
-//		printf("El numero de Terminal en la fila %d no es un numero natural\n", Numero_Fila);
-//		return ERROR;
-//	}
-//	int Num_Terminal = 0;
-//
-//	if (Convertir_A_Entero(Numero_Terminal, &Num_Terminal) == ERROR) {
-//		printf("El Dato del terminal no se pudo convertir a dato numerico\n");
-//		return ERROR;
-//	}
-//
-//
-//	if ((Num_Terminal < 1) || (Num_Terminal > Numero_Terminales)) {
-//		printf("Error el numero de terminales ha de estar entre 1 y"
-//			"%d en el CSV de los vehiculos\n", Numero_Terminales);
-//		return ERROR;
-//	}
-//	return EXITO;
-//}
-//
-//bool  Es_Negativo(double Numero) {
-//	//Este subprograma se utiliza
-//	//para comprobar si un numero
-//	//es negativo
-//
-//	return Numero < 0;
-//}
-//bool Es_Un_Numero(const wchar_t* str, int Permitir_Decimal) {
-//	//Este subprograma se utiliza para 
-//	//comprobar si el dato del csv leido
-//	//es un numero o no. Ademas se 
-//	//diferencia si el numero leido 
-//	//puede tener decimales o no.
-//
-//	int Numero_Puntos = 0;
-//
-//	for (int i = 0; str[i] != '\0'; i++) {
-//		if (!isdigit(str[i])) {
-//			if (Permitir_Decimal && str[i] == '.' && Numero_Puntos++ == 0) {
-//				continue;
-//			}
-//			return false; // No es un numero
-//		}
-//	}
-//	return true;
-//
-//}
+#include "conversion_numeros.h"
+#include "definiciones_globales.h"
+#include "registrar_errores.h"
+#include <ctype.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <wctype.h> 
+
+
+bool es_un_numero(const wchar_t* str, int permitir_decimal) {
+	//Este subprograma se utiliza para 
+	//comprobar si el dato del csv leido
+	//es un numero o no. Ademas se 
+	//diferencia si el numero leido 
+	//puede tener decimales o no.
+
+	int numero_puntos = 0;
+
+	for (int i = 0; str[i] != '\0'; i++) {
+		if (!iswdigit(str[i])) {
+			if (permitir_decimal && str[i] == '.' && numero_puntos++ == 0) {
+				continue;
+			}
+			return false; // No es un numero
+		}
+	}
+	//Como mucho hay un punto decimal.
+	if (numero_puntos > 1) {
+		return false;
+	}
+	return true;
+}
+
+bool comprobar_porcentaje_bateria(const double porcentaje_bateria) {
+	//Este subprograma se utiliza para
+	//comprobar que el porcentaje de 
+	//bateria se encuentra entre 0 y 1
+
+	return ((porcentaje_bateria >= 0) && (porcentaje_bateria <= 1));
+}
+
+int verificar_numero_terminal(const wchar_t* numero_terminal_string, const int numero_fila) {
+	//Este subprograma se utiliza
+	//para verificar que el dato 
+	//de terminal es correcto.
+
+	//Se comprueba que el numero 
+	//del terminal esté dentro del 
+	//rango y que sea un dato numerico
+	//no decimal.
+	if (!es_un_numero(numero_terminal_string, DECIMAL_NO_INCLUIDO)) {
+		char mensaje_error[512];
+		snprintf(mensaje_error, sizeof(mensaje_error), "El numero de Terminal en la fila %d no es un numero natural",
+			     numero_fila);
+		
+		printf("%s\n", mensaje_error);
+		registrar_error(mensaje_error,REGISTRO_ERRORES);
+		return ERROR;
+	}
+	int num_terminal = 0;
+
+	//Se convierte el numero en un numero entero.
+	if (convertir_a_entero(numero_terminal_string, &num_terminal) == ERROR) {
+		char mensaje_error[512];
+		snprintf(mensaje_error, sizeof(mensaje_error), "El numero de terminal en la fila %d no"
+		"se puede convertir a dato numerico\n",numero_fila);
+		printf("%s\n", mensaje_error);
+		registrar_error(mensaje_error, REGISTRO_ERRORES);
+		return ERROR;
+	}
+
+
+	//Se comprueba que el numero de terminal esté entre 1 y 12.
+	if ((num_terminal < 1) || (num_terminal > NUMERO_TERMINALES)) {
+		char mensaje_error[512];
+		snprintf(mensaje_error, sizeof(mensaje_error), "Error el numero de terminales"
+		"ha de estar entre 1 y %d en el CSV de los vehiculos\n", NUMERO_TERMINALES);
+
+		printf("%s\n", mensaje_error);
+		registrar_error(mensaje_error, REGISTRO_ERRORES);
+		return ERROR;
+	}
+	return EXITO;
+}
+
+bool  es_negativo(double numero) {
+	//Este subprograma se utiliza
+	//para comprobar si un numero
+	//es negativo
+
+	return numero < 0;
+}

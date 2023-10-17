@@ -216,8 +216,8 @@ void indicar_posiciones_informacion(informacion_entrada_t* informacion_sistema) 
     ubicacion_csv_vehiculos_t* puntero_info_ubicacion_vehiculos;
 
     puntero_info_ubicacion_algoritmo = &(informacion_sistema->datos_algoritmo.posiciones_informacion_algoritmo);
-    puntero_info_ubicacion_precio_compra = &(informacion_sistema->datos_precio_compra.posiciones_informacion_precio_compra);
-    puntero_info_ubicacion_precio_venta = &(informacion_sistema->datos_precio_venta.posiciones_informacion_precio_venta);
+    puntero_info_ubicacion_precio_compra = &(informacion_sistema->datos_precio_compra.posiciones_informacion_precio);
+    puntero_info_ubicacion_precio_venta = &(informacion_sistema->datos_precio_venta.posiciones_informacion_precio);
     puntero_info_ubicacion_terminales = &(informacion_sistema->datos_terminales.posiciones_informacion_terminales);
     puntero_info_ubicacion_restricciones = &(informacion_sistema->datos_restricciones.posiciones_informacion_restricciones);
     puntero_info_ubicacion_baterias = &(informacion_sistema->datos_baterias.posiciones_informacion_baterias);

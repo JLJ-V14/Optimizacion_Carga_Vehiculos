@@ -1,29 +1,31 @@
-//#ifndef OPERACIONES_FECHA_H
-//#define OPERACIONES_FECHA_H
-//
-///* Include files */
-//
-//#include "Tipos_Optimizacion.h"
-//#include <time.h>
-//
-//#ifdef __cplusplus
-//extern "C" {
-//#endif
-//	void Cargar_Fecha_Algoritmo(datos_CSV* Datos_Algoritmo, struct tm* Fecha_Inicial_Algoritmo,
-//		 struct tm* Fecha_Final_Algoritmo);
-//	void Cargar_Fecha_Carga(Datos_CSV* Datos_Carga, struct tm* Fecha_Inicial_Carga,
-//		 struct tm* Fecha_Final_Carga, const int Numero_Fila);
-//	int Comprobar_Fecha_Carga(struct tm Fecha_Inicial_Algoritmo, struct tm Fecha_Final_Algoritmo,
-//		struct tm Fecha_Inicial_Carga, struct tm Fecha_Final_Carga);
-//	int Verificar_Fecha_Carga(Datos_CSV* Datos_Carga, Datos_CSV* Datos_Algoritmo,
-//		const int Numero_Fila);
-//	void Cargar_Fecha(const Datos_CSV* Datos_Entrada, struct tm* Fecha, const int Columna_Csv_Anyo,
-//		const int Columna_Csv_Mes, const int Columna_Csv_Dia, const int Columna_Csv_Hora,
-//		const int Columna_Csv_Minuto, const int Numero_Fila, const int Incluir_Minuto);
-//	int  Comprobar_Orden_Fechas(const struct tm Fecha_Anterior, const struct tm Fecha_Posterior,
-//		const int    Incluir_Igual);
-//#ifdef __cplusplus
-//}
-//#endif
-//
-//#endif
+#ifndef OPERACIONES_FECHA_H
+#define OPERACIONES_FECHA_H
+
+/* Include files */
+
+#include "tipos_optimizacion.h"
+#include <time.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+	int cargar_fecha_algoritmo(datos_csv_algoritmo_t* datos_algoritmo, struct tm* fecha_inicial_algoritmo,
+		 struct tm* fecha_final_algoritmo);
+	void cargar_fecha_carga(datos_csv_t* datos_carga, struct tm* fecha_inicial_carga,
+		 struct tm* fecha_final_carga, const int numero_fila);
+	int comprobar_fecha_carga(struct tm fecha_inicial_algoritmo, struct tm fecha_final_algoritmo,
+		struct tm fecha_inicial_carga, struct tm fecha_final_carga);
+	int verificar_fecha_carga(datos_csv_t* datos_carga, datos_csv_t* datos_algoritmo,
+		const int numero_fila);
+
+	void cargar_fecha(const datos_csv_t* datos_entrada, struct tm* fecha, const int columna_csv_anyo,
+		const int columna_csv_mes, const int columna_csv_dia, const int columna_csv_hora,
+		const int columna_csv_minuto, const int numero_fila, const int incluir_minuto);
+
+	int  verificar_orden_fechas(const struct tm fecha_anterior, const struct tm fecha_posterior,
+		const int incluir_igual);
+#ifdef __cplusplus
+}
+#endif
+
+#endif

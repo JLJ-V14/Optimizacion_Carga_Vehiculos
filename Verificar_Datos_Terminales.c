@@ -1,61 +1,68 @@
 //
-//#include "Definiciones_Globales.h"
-//#include "Funciones_Auxiliares.h"
-//#include "Tipos_Optimizacion.h"
+//#include "conversion_numeros.h"
+//#include "definiciones_globales.h"
+//#include  "operaciones_string.h"
+//#include  "operaciones_csv.h"
+//#include  "registrar_errores.h"
+//#include "tipos_optimizacion.h"
+//#include "validaciones.h"
 //#include <stdbool.h>
 //#include <stdio.h>
 //#include <wchar.h>
 //#include <wctype.h>
 //
 ////Defino las dimensiones que tiene el CSV de la informacion de los terminales
-//#define   Numero_Filas_Csv_Terminales    13
-//#define   Numero_Columnas_Csv_Terminales 2
+//#define   NUMERO_FILAS_CSV_TERMINALES    13
+//#define   NUMERO_COLUMNAS_CSV_TERMINALES 2
 //
 ////Defino los valores que han de tener los encabezados->
 //
-//#define  Encabezado_Numero_Terminal L"Numero Terminal"
-//#define  Encabezado_Fase            L"Fase "
+//#define  ENCABEZADO_NUMERO_TERMINAL L"Numero Terminal"
+//#define  ENCABEZADO_FASE            L"Fase "
 ////Defino las posiciones en el CSV donde se encuentra alguna
 ////informacion->
 //
-//#define  Columna_Encabezados  0
+//#define  COLUMNA_ENCABEZADOS  0
 //
-//
-//static int Comprobar_Numero_Terminal(const wchar_t *Terminal, const int Terminal_Actual) {
-//	//Este subprogram se utiliza para commprobar
+//    //Este subprogram se utiliza para commprobar
 //	//que  el dato de numero de terminal es
 //	//correcto, comprobando que :
 //	//Es un numero y que
 //	//Los terminales son consecutivos.
 //
-//	if (!Es_Un_Numero(Terminal, Decimal_No_Incluido)) {
+//static int comprobar_numero_terminal(const wchar_t *terminal, const int terminal_actual) {
+//	
+//
+//	if (!es_un_numero(terminal, DECIMAL_NO_INCLUIDO)) {
 //		printf("El numero del terminal ha de ser un dato numerico \n");
 //		return ERROR;
 //	}
 //    
-//	int Numero_Terminal;
-//	if (Convertir_A_Entero(Terminal, &Numero_Terminal) == ERROR) {
+//	int numero_terminal;
+//	if (convertir_a_entero(terminal, &numero_terminal) == ERROR) {
 //		printf("La conversión de caracter a numero entero no ha sido exitosa \n");
 //		return ERROR;
 //	}
 //
-//	if (Numero_Terminal != Terminal_Actual) {
-//		printf("Error el numero de terminal ha de ser %d y es %d\n",Terminal_Actual,Numero_Terminal);
+//	if (numero_terminal != terminal_actual) {
+//		printf("Error el numero de terminal ha de ser %d y es %d\n",terminal_actual,numero_terminal);
 //		return ERROR;
 //	}
 //	return EXITO;
 //}
-//static int Comprobar_Fase_Terminal(const wchar_t *Fase) {
-//	//Este subprograma se utiliza para comprobar
+//    //Este subprograma se utiliza para comprobar
 //	//que la fase asignada a cada terminal 
 //	//corresponde con R S T N o Neutro y Nada
 //
-//	const wchar_t * Valores_Aceptables[] = { L"R",L"S",L"T",L"Neutro",L"Nada" };
-//	const int Numero_Valores_Aceptables = sizeof(Valores_Aceptables) / sizeof(Valores_Aceptables[0]);
+//static int comprobar_fase_terminal(const wchar_t *fase) {
+//	
+//
+//	const wchar_t * valores_aceptables[] = { L"R",L"S",L"T",L"Neutro",L"Nada" };
+//	const int numero_valores_aceptables = sizeof(valores_aceptables) / sizeof(valores_aceptables[0]);
 //
 //
-//	for (int i = 0; i < Numero_Valores_Aceptables; i++) {
-//		if (Strings_Iguales(Fase, Valores_Aceptables[i])) {
+//	for (int i = 0; i < numero_valores_aceptables; i++) {
+//		if (strings_iguales(fase, valores_aceptables[i])) {
 //			return EXITO;
 //		}
 //	}
@@ -64,22 +71,42 @@
 //	return ERROR;
 //
 //}
-//static int Comprobar_Informacion_Terminales(Datos_CSV *Datos_Terminales) {
-//	//Este subprograma se utiliza para comprobar
+//    //Este subprograma se utiliza para comprobar
 //	//que la informacion de los diferentes terminales
 //	//es correcta.
-//    //Se comprueba que los numeros de los terminales
+//	//Se comprueba que los numeros de los terminales
 //	//estan asignados correctamente, y la fase de estos
 //	//es un valor valido, R S T Neutro o nada.
 //
-//	for (int Numero_Terminal = 1; Numero_Terminal <= Numero_Terminales; Numero_Terminal++) {
-//		if (Comprobar_Numero_Terminal(Datos_Terminales->Datos[Numero_Terminal][Columna_Numero_Terminal], 
-//			Numero_Terminal) == ERROR) {
-//			printf("Error el Numero de terminal en la columna %d no es correcto\n", Numero_Terminal);
+//static int comprobar_informacion_terminales(datos_csv_terminales_t *datos_terminales) {
+//	
+//	//Cargo el las columnas en las que se encuentra la informacion
+//	int columna_numero_terminal = datos_terminales->posiciones_informacion_terminales.columna_numero_terminal;
+//	int columna_fase = datos_terminales->posiciones_informacion_terminales.columna_fase;
+//
+//	//Cargo el puntero que apunta a la posicion de memoria donde se encuentra la informacion relativa 
+//	//a los terminales.
+//	datos_csv_t* informacion_terminales = &(datos_terminales->informacion_terminales);
+//
+//	for (int numero_terminal = 1; numero_terminal <= NUMERO_TERMINALES; numero_terminal++) {
+//
+//		if (comprobar_numero_terminal(informacion_terminales->datos[numero_terminal][columna_numero_terminal], 
+//			numero_terminal) == ERROR) {
+//
+//			char mensaje_error[512];
+//			snprintf(mensaje_error,sizeof(mensaje_error),"Error el Numero de terminal en la fila %d no es correcto",
+//			numero_terminal+1);
+//			printf("%s\n",mensaje_error);
+//			registrar_error(mensaje_error, REGISTRO_ERRORES);
 //			return ERROR;
 //		}
-//		if (Comprobar_Fase_Terminal(Datos_Terminales->Datos[Numero_Terminal][Columna_Fase])==ERROR) {
-//			printf("Error la fase del terminal en la columna %d no es correcta\n", Numero_Terminal);
+//		if (comprobar_fase_terminal(informacion_terminales->datos[numero_terminal][columna_fase])==ERROR) {
+//
+//			char mensaje_error[512];
+//			snprintf(mensaje_error, sizeof(mensaje_error), "Error el Numero de terminal en la fila %d no es correcto",
+//			numero_terminal + 1);
+//			printf("%s\n", mensaje_error);
+//			registrar_error(mensaje_error, REGISTRO_ERRORES);
 //			return ERROR;
 //
 //		}
@@ -87,44 +114,62 @@
 //	return EXITO;
 //}
 //
-//static int Verificar_Encabezados_Terminales(Datos_CSV *Datos_Terminales) {
-//	//Este subprograma se utiliza para
+//    //Este subprograma se utiliza para
 //	//verificar que los encabezados del 
 //	//CSV de los terminales son correctos->
-//	
-//	const wchar_t* Valores_Aceptables[] = { L"Numero Terminal",L"Fase"};
-//	const int Numero_Encabezados = sizeof(Valores_Aceptables) / sizeof(Valores_Aceptables[0]);
 //
-//	if (Verificar_Encabezado_CSV(Datos_Terminales, Valores_Aceptables,
-//		Numero_Encabezados, "Datos de los terminales de la placa de redistribucion") == ERROR) {
+//static int verificar_encabezados_terminales(datos_csv_t *datos_terminales) {
+//	
+//	
+//	const wchar_t* valores_aceptables[] = { L"Numero Terminal",L"Fase"};
+//	const int numero_encabezados = sizeof(valores_aceptables) / sizeof(valores_aceptables[0]);
+//
+//	if (verificar_encabezado_csv(datos_terminales, valores_aceptables,
+//		numero_encabezados, "Datos de los terminales de la placa de redistribucion") == ERROR) {
 //		printf("Los encabezados del CSV de los datos de los terminales son incorrectos\n");
+//		registrar_error("Los encabezados del csv de los terminales son incorrectos\n",
+//		REGISTRO_ERRORES);
 //		return ERROR;
 //	}
 //
 //	
 //	return EXITO;
 //}
-//int Verificar_Datos_Terminales(Datos_CSV* Datos_Terminales) {
-//	//Este subprograma se utiliza para verificar que la 
-//	//informacion en el CSV de los terminales es correcto:
 //
-//	//Se verificara que las dimensiones del CSV son las esperadas
-//	//y que los terminales estan en orden consecutivo, y que las fases
-//	//son las esperadas.
+///*  Este subprograma se utiliza para verificar que la
+//	informacion en el CSV de los terminales es correcto:
+//	Se verificara que las dimensiones del CSV son las esperadas
+//	y que los terminales estan en orden consecutivo, y que las fases
+//	son las esperadas.
+//	Obtengo el puntero que apunta a la posicion en memoria donde
+//*/
 //
-//	if (Comprobar_Dimensiones_CSV_Fijo(Datos_Terminales,Numero_Filas_Csv_Terminales,
-//		                              Numero_Columnas_Csv_Terminales,"Informacion Terminales") ==ERROR) {
-//		printf("Las Dimensiones del CSV de los terminales son incorrectas \n ");
+//int verificar_datos_terminales(datos_csv_terminales_t* datos_terminales) {
+//	
+//
+//	datos_csv_t* informacion_terminales = &(datos_terminales->informacion_terminales);
+//
+//	if (comprobar_dimensiones_csv_fijo(informacion_terminales,NUMERO_FILAS_CSV_TERMINALES,
+//		NUMERO_COLUMNAS_CSV_TERMINALES,"Informacion Terminales") ==ERROR) {
+//		printf("Las Dimensiones del CSV de los terminales son incorrectas\n");
+//		registrar_error("Las Dimensiones del CSV de los terminales son incorrectas\n",
+//		REGISTRO_ERRORES);
 //		return ERROR;
 //	}
 //
-//	if (Verificar_Encabezados_Terminales(Datos_Terminales) == ERROR) {
-//		printf("Los encabezados en el CSV de los terminales son incorrectos \n");
+//	//Se verifica que los encabezados del csv de los terminales son correctos.
+//	if (verificar_encabezados_terminales(informacion_terminales) == ERROR) {
+//		printf("Los encabezados en el CSV de los terminales son incorrectos\n");
+//		registrar_error("Las Dimensiones del CSV de los terminales son incorrectas\n",
+//		REGISTRO_ERRORES);
 //		return ERROR;
 //	}
 //
-//	if (Comprobar_Informacion_Terminales(Datos_Terminales) == ERROR) {
+//	//Se comprueban que los datos de los terminales sean correctos
+//	if (comprobar_informacion_terminales(datos_terminales) == ERROR) {
 //		printf("Los Datos del CSV de los terminales son incorrectos\n");
+//		registrar_error("Las Dimensiones del CSV de los terminales son incorrectas\n",
+//		REGISTRO_ERRORES);
 //		return ERROR;
 //	}
 //

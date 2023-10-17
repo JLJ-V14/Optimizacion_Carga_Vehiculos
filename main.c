@@ -43,17 +43,27 @@ int main() {
     }
 
     //Se pasa a leer los datos de entrada->
+    printf("Se ha inicializado las variables\n");
     if (leer_entradas(&informacion_sistema) == ERROR) {
         printf("Fallo en la lectura de las entradas\n");
         registrar_error("Fallo en la lectura de los datos de entrada", REGISTRO_ERRORES);
         goto fin_programa;
     }
+    //Se inspecciona si la lectura se esta haciendo adecuadamente
+    printf("Se ha leido las entradas\n");
     if (comprobar_informacion_entrada(&informacion_sistema) == ERROR) {
         printf("Fallo en la comprobacion de la informacion de entrada\n");
         registrar_error("Fallo en la comprobacion de la informacion de entrada", REGISTRO_ERRORES);
         goto fin_programa;
     }
-
+    printf("Se ha volcado lo leido a los csvs\n");
+    //Se verifica que la informacion de entrada es correcta
+    if (verificar_entradas(&informacion_sistema) == ERROR) {
+        printf("Las entradas son incorrectas\n");
+        registrar_error("Fallo las entradas son incorrectas", REGISTRO_ERRORES);
+        goto fin_programa;
+    }
+    printf("Se han verificado las entradas\n");
     // Se libera la memoria reservada
     fin_programa:
     liberar_memoria_csvs(&informacion_sistema);

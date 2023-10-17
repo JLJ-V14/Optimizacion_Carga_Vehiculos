@@ -125,14 +125,11 @@ typedef struct {
 
 
 typedef struct {
-    datos_csv_t                    informacion_precio_compra;
-    ubicacion_csv_precios_t        posiciones_informacion_precio_compra;
-}datos_csv_precio_compra_t;
+    datos_csv_t                    informacion_precio;
+    ubicacion_csv_precios_t        posiciones_informacion_precio;
+}datos_csv_precio_t;
 
-typedef struct {
-    datos_csv_t                   informacion_precio_venta;
-    ubicacion_csv_precios_t       posiciones_informacion_precio_venta;
-}datos_csv_precio_venta_t;
+
 
 typedef struct {
     datos_csv_algoritmo_t       datos_algoritmo;
@@ -140,8 +137,8 @@ typedef struct {
     datos_csv_baterias_t        datos_baterias;
     datos_csv_restricciones_t   datos_restricciones;
     datos_csv_terminales_t      datos_terminales;
-    datos_csv_precio_compra_t   datos_precio_compra;
-    datos_csv_precio_venta_t    datos_precio_venta;
+    datos_csv_precio_t          datos_precio_compra;
+    datos_csv_precio_t          datos_precio_venta;
 
 }informacion_entrada_t;
 

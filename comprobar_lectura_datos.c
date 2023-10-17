@@ -21,13 +21,13 @@
 /* Se definen los nombres de los CSVs en los cuales
 *  se va a escribir la informacion que se ha leido
 */
-#define ARCHIVO_COMPROBACION_ALGORITMO       "comprobacion_datos_algoritmo"
-#define ARCHIVO_COMPROBACION_VEHICULOS       "comprobacion_datos_vehiculos"
-#define ARCHIVO_COMPROBRACION_BATERIA        "comprobacion_datos_baterias"
-#define ARCHIVO_COMPROBACION_RESTRICCIONES   "comprobacion_datos_restricciones"
-#define ARCHIVO_COMPROBACION_TERMINALES      "comprobacion_datos_terminales"
-#define ARCHIVO_COMPROBACION_PRECIO_COMPRA   "comprobacion_datos_precio_compra"
-#define ARCHIVO_COMPROBACION_PRECIO_VENTA    "comprobacion_datos_precio_venta"
+#define ARCHIVO_COMPROBACION_ALGORITMO       "comprobacion_datos_algoritmo.csv"
+#define ARCHIVO_COMPROBACION_VEHICULOS       "comprobacion_datos_vehiculos.csv"
+#define ARCHIVO_COMPROBRACION_BATERIA        "comprobacion_datos_baterias.csv"
+#define ARCHIVO_COMPROBACION_RESTRICCIONES   "comprobacion_datos_restricciones.csv"
+#define ARCHIVO_COMPROBACION_TERMINALES      "comprobacion_datos_terminales.csv"
+#define ARCHIVO_COMPROBACION_PRECIO_COMPRA   "comprobacion_datos_precio_compra.csv"
+#define ARCHIVO_COMPROBACION_PRECIO_VENTA    "comprobacion_datos_precio_venta.csv"
 
 
 /*
@@ -40,11 +40,18 @@ static void comprobar_datos(FILE* comprobacion_datos, datos_csv_t * datos) {
 	
 	for (int fila = 0; fila < datos->filas; fila++) {
 		for (int columna = 0; columna < datos->columnas; columna++) {
-		
+			wprintf(L"%ls\n",datos->datos[fila][columna]);
 			fwprintf(comprobacion_datos, L"%ls",datos->datos[fila][columna]);
+
+			//Si no es la ultima columna se añade un separador
+			if (columna != datos->columnas - 1) {
+				fwprintf(comprobacion_datos, L",");
+			}
 		}
+		
 	}
 	printf("Numero de filas es %d\n",datos->filas);
+	printf("Numero de columnas es%d\n", datos->columnas);
 }
 /*
 *  En el subprograma comprobar_informacion_entrada
@@ -128,17 +135,18 @@ int comprobar_informacion_entrada(informacion_entrada_t* informacion_sistema) {
 	* Se definen los punteros que apuntan a la localizacion en 
 	* memoria, donde se encuentran la informacion.
 	*/
-	datos_csv_algoritmo_t*      datos_algoritmo      = &(informacion_sistema->datos_algoritmo);
-	datos_csv_vehiculos_t*      datos_vehiculo       = &(informacion_sistema->datos_vehiculos);
-	datos_csv_baterias_t*       datos_baterias       = &(informacion_sistema->datos_baterias);
-	datos_csv_restricciones_t*  datos_restricciones  = &(informacion_sistema->datos_restricciones);
-	datos_csv_terminales_t*     datos_terminales     = &(informacion_sistema->datos_terminales);
-	datos_csv_precio_compra_t*  datos_precio_compra  = &(informacion_sistema->datos_precio_compra);
-	datos_csv_precio_venta_t*   datos_precio_venta   = &(informacion_sistema->datos_precio_venta);
+	datos_csv_t*         datos_algoritmo      = &(informacion_sistema->datos_algoritmo.informacion_algoritmo);
+	datos_csv_t*         datos_vehiculo       = &(informacion_sistema->datos_vehiculos.informacion_vehiculos);
+	datos_csv_t*         datos_baterias       = &(informacion_sistema->datos_baterias.informacion_baterias);
+	datos_csv_t*         datos_restricciones  = &(informacion_sistema->datos_restricciones.informacion_restricciones);
+	datos_csv_t*         datos_terminales     = &(informacion_sistema->datos_terminales.informacion_terminales);
+	datos_csv_t*         datos_precio_compra  = &(informacion_sistema->datos_precio_compra.informacion_precio);
+	datos_csv_t*         datos_precio_venta   = &(informacion_sistema->datos_precio_venta.informacion_precio);
 
 	/*
 	* Se escribe los datos de los csvs.
 	*/
+	wprintf(L"Comprobacion en la comprobacion %ls\n\n", datos_algoritmo->datos[0][0]);
 	comprobar_datos(comprobacion_datos_algoritmo,datos_algoritmo);
 	comprobar_datos(comprobacion_datos_vehiculos, datos_vehiculo);
 	comprobar_datos(comprobacion_datos_baterias, datos_baterias);
